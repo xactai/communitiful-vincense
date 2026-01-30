@@ -51,9 +51,9 @@ jobs:
           password: ${{ secrets.SMTP_PASSWORD }}
       
           # Email metadata
-          from: "Communitiful Monitoring <${{ secrets.SMTP_USERNAME }}>"
+          from: "VinCense Dashboard Monitoring <${{ secrets.SMTP_USERNAME }}>"
           to: ${{ secrets.MAIL_TO }}
-          subject: "Health Check Report — Communitiful"
+          subject: "Health Check Report — VinCense Dashboard"
     
           
           # Email body (Plain text / minimal Markdown)
