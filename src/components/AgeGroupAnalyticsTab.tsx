@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import type { DataDict } from '../types';
 import Plot from 'react-plotly.js';
 import { format } from 'date-fns';
@@ -183,7 +183,8 @@ export const AgeGroupAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
     const { ageGroupMeans, scatterData, quadrantData, polarData, stabilityData } = analyticsData;
     const textColor = isDarkMode ? '#e5e7eb' : '#374151';
     const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-    const [activeVital, setActiveVital] = useState<string>('Pulse');
+    const activeVital = 'Pulse';
+
 
     // Helper for Regression
     const calculateRegression = (x: number[], y: number[]) => {
@@ -307,7 +308,7 @@ export const AgeGroupAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                 <Plot
                                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     data={[
-                                        ...getRangeTraces(activeVital, ageRangeX, 'scatter'),
+                                        ...getRangeTraces(activeVital, ageRangeX),
                                         {
                                             x: x,
                                             y: y,

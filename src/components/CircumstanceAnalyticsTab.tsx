@@ -139,7 +139,7 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Mean Readings by Circumstance</h4>
                             <Plot
                                 data={[
-                                    ...getRangeTraces(vital.key, sortedCircumstances, 'category'),
+                                    ...getRangeTraces(vital.key, sortedCircumstances),
                                     ...['VinCense', 'Dr Trust', 'Dr Odin'].map(dev => {
                                         const x: string[] = [];
                                         const y: number[] = [];
@@ -227,7 +227,7 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                                             };
                                         }),
                                         // 2. Range Traces Last (for Bottom/End of Legend)
-                                        ...getRangeTraces(vital.key, sortedCircumstances, 'category')
+                                        ...getRangeTraces(vital.key, sortedCircumstances)
                                     ]}
                                     layout={{
                                         autosize: true, // Auto-size to container (1400px)
