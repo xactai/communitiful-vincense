@@ -225,67 +225,6 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                     </div>
 
                     {/* Chart 2: Distribution (Box Plot) - VinCense */}
-<<<<<<< HEAD
-                    <div className="col-span-1 lg:col-span-2 h-[500px] overflow-x-auto w-full border border-gray-100 dark:border-gray-800 rounded-lg">
-                        <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center sticky left-0 w-full pt-4">VinCense Distribution</h4>
-                        <div style={{ width: '100%', height: '100%' }}>
-                            <Plot
-                                data={[
-                                    // 1. Box Plots First
-                                    ...sortedCircumstances.map(c => {
-                                        const vals = processed[currentVital.key]?.[c]?.['VinCense'] || [];
-                                        return {
-                                            y: vals,
-                                            name: c,
-                                            type: 'box',
-                                            boxpoints: 'all',
-                                            jitter: 0.3,
-                                            pointpos: -1.8,
-                                            marker: { size: 2 },
-                                        };
-                                    }),
-                                    // 2. Range Traces Last (for Bottom/End of Legend)
-                                    ...getRangeTraces(currentVital.key, sortedCircumstances)
-                                ]}
-                                layout={{
-                                    autosize: true, // Auto-size to container (1400px)
-                                    paper_bgcolor: 'transparent',
-                                    plot_bgcolor: 'transparent',
-                                    font: { color: textColor },
-                                    showlegend: true,
-                                    legend: {
-                                        orientation: 'v', // Vertical legend
-                                        x: 1.02, // Right side
-                                        y: 1, // Top alignment
-                                        xanchor: 'left',
-                                        yanchor: 'top',
-                                        bgcolor: 'rgba(255, 255, 255, 0.5)' // semi-transparent background
-                                    },
-                                    margin: {
-                                        b: 180, // Bottom margin for -45 labels
-                                        l: 60,
-                                        r: 250, // Right margin for vertical legend
-                                        t: 80 // Reduced top margin for cleaner title
-                                    },
-                                    xaxis: {
-                                        gridcolor: gridColor,
-                                        title: 'Circumstance',
-                                        tickangle: -45,
-                                        automargin: false
-                                    },
-                                    yaxis: {
-                                        gridcolor: gridColor,
-                                        title: currentVital.unit,
-                                        automargin: true,
-                                    },
-                                } as any}
-                                useResizeHandler={true}
-                                config={{ responsive: true }}
-                                className="w-full h-full"
-                                style={{ width: '100%', height: '100%' }}
-                            />
-                        </div>
-=======
                     <div className="col-span-1 lg:col-span-2">
                         <ExpandableChart title="VinCense Distribution" className="h-[500px] border border-gray-100 dark:border-gray-800 rounded-lg bg-white dark:bg-card-bg-dark">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center sticky left-0 w-full pt-4">VinCense Distribution</h4>
@@ -347,7 +286,6 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                                 />
                             </div>
                         </ExpandableChart>
->>>>>>> a0d908f (local repo push changes)
                     </div>
                     {/* Insight 2 */}
                     {/* Chart Description */}

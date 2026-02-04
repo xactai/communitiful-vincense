@@ -166,35 +166,6 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 h-[450px] bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Gendered Distribution (Normal Range)</h4>
-<<<<<<< HEAD
-                            <Plot
-                                data={[
-                                    ...getRangeTraces(currentVital.key, genders),
-                                    ...genders.map(g => ({
-                                        y: currentData?.[g]?.all || [],
-                                        type: 'box',
-                                        name: g,
-                                        boxpoints: 'outliers',
-                                        jitter: 0.3,
-                                        pointpos: -1.8,
-                                        marker: { color: g === 'Male' ? '#3b82f6' : '#ec4899' }
-                                    }))
-                                ] as any}
-                                layout={{
-                                    autosize: true,
-                                    paper_bgcolor: 'transparent',
-                                    plot_bgcolor: 'transparent',
-                                    font: { color: textColor },
-                                    xaxis: { gridcolor: gridColor, showgrid: false },
-                                    yaxis: { gridcolor: gridColor, title: currentVital.unit },
-                                    showlegend: true,
-                                    legend: { orientation: 'h', y: 1.05 },
-                                    margin: { l: 50, r: 20, t: 30, b: 30 }
-                                } as any}
-                                useResizeHandler={true}
-                                className="w-full h-full"
-                            />
-=======
                             <ExpandableChart title="Gendered Distribution" className="h-full">
                                 <Plot
                                     data={[
@@ -224,7 +195,6 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                     className="w-full h-full"
                                 />
                             </ExpandableChart>
->>>>>>> a0d908f (local repo push changes)
                         </div>
                         <div className="xl:col-span-1 space-y-4 flex flex-col justify-center">
                             <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
@@ -248,26 +218,16 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 h-[450px] bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">AM vs PM Shift (Diurnal Delta)</h4>
-<<<<<<< HEAD
-                            <Plot
-                                data={[
-                                    ...getRangeTraces(currentVital.key, ['AM', 'PM']),
-                                    ...genders.map(g => {
-                                        const amVals = currentData?.[g]?.am || [];
-                                        const pmVals = currentData?.[g]?.pm || [];
-                                        const amMean = calculateStats(amVals).mean;
-                                        const pmMean = calculateStats(pmVals).mean;
-=======
+
                             <ExpandableChart title="AM vs PM Shift" className="h-full">
                                 <Plot
                                     data={[
-                                        ...getRangeTraces(currentVital.key, ['AM', 'PM'], 'category'),
+                                        ...getRangeTraces(currentVital.key, ['AM', 'PM']),
                                         ...genders.map(g => {
                                             const amVals = currentData?.[g]?.am || [];
                                             const pmVals = currentData?.[g]?.pm || [];
                                             const amMean = calculateStats(amVals).mean;
                                             const pmMean = calculateStats(pmVals).mean;
->>>>>>> a0d908f (local repo push changes)
 
                                             return {
                                                 x: ['AM', 'PM'],
