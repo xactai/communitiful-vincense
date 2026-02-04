@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useMemo } from 'react';
-=======
 import React, { useMemo, useState } from 'react';
->>>>>>> 13725ae (Updated code commited)
 import type { DataDict } from '../types';
 import Plot from 'react-plotly.js';
 import { format } from 'date-fns';
@@ -187,12 +183,7 @@ export const AgeGroupAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
     const { ageGroupMeans, scatterData, quadrantData, polarData, stabilityData } = analyticsData;
     const textColor = isDarkMode ? '#e5e7eb' : '#374151';
     const gridColor = isDarkMode ? '#374151' : '#e5e7eb';
-<<<<<<< HEAD
-    const activeVital = 'Pulse';
-
-=======
     const [activeVital, setActiveVital] = useState<string>('Pulse');
->>>>>>> 13725ae (Updated code commited)
 
     // Helper for Regression
     const calculateRegression = (x: number[], y: number[]) => {
@@ -299,7 +290,7 @@ export const AgeGroupAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-8">
                 {/* 2. Age vs. Vital Scatter Plot */}
                 <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                     <h3 className="text-xl font-bold mb-2 text-amber-900 dark:text-amber-400">Age vs Pulse Rate (Decay Trend)</h3>
@@ -316,11 +307,7 @@ export const AgeGroupAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                 <Plot
                                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     data={[
-<<<<<<< HEAD
-                                        ...getRangeTraces(activeVital, ageRangeX),
-=======
                                         ...getRangeTraces(activeVital, ageRangeX, 'scatter'),
->>>>>>> 13725ae (Updated code commited)
                                         {
                                             x: x,
                                             y: y,

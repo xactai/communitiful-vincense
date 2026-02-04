@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { fetchAndParseData, filterData } from './utils/dataLoader';
 import type { DataDict } from './types';
@@ -15,6 +15,7 @@ import { TrustOdinComparisonTab } from './components/TrustOdinComparisonTab';
 import { WelcomeTab } from './components/WelcomeTab';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck } from 'lucide-react';
+import { ScrollToTop } from './components/ScrollToTop';
 
 import type { DateRange } from 'react-day-picker';
 
@@ -23,6 +24,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const mainRef = useRef<HTMLDivElement>(null);
 
   // Date State: Range or Single (from react-day-picker)
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange | undefined>(undefined);
@@ -81,11 +83,14 @@ function App() {
     Object.values(data).forEach(sheetData => {
       sheetData.forEach(row => {
         if (row['Subject Name']) {
-          allSubjects.add(String(row['Subject Name']));
+          const name = String(row['Subject Name']).trim();
+          if (name) {
+            allSubjects.add(name);
+          }
         }
       });
     });
-    return ['All Subjects', ...Array.from(allSubjects).sort()];
+    return ['All Subjects', ...Array.from(allSubjects).sort((a, b) => a.localeCompare(b))];
   }, [data]);
 
   // Set default subject if not selected
@@ -161,7 +166,7 @@ function App() {
         toggleTheme={() => setIsDarkMode(!isDarkMode)}
       />
 
-      <main className="flex-1 overflow-auto p-4 md:p-8 pt-16 md:pt-8 relative transition-all duration-300">
+      <main ref={mainRef} className="flex-1 overflow-auto p-4 md:p-8 pt-16 md:pt-8 relative transition-all duration-300">
 
         {/* Sync Popup */}
         <AnimatePresence>
@@ -285,6 +290,7 @@ function App() {
             </AnimatePresence>
           </div>
         )}
+        <ScrollToTop scrollContainerRef={mainRef} />
       </main>
     </div>
   );

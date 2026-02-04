@@ -29,22 +29,23 @@ export const SourceTab: React.FC<SourceTabProps> = ({ data }) => {
 
     return (
         <div>
-            <h2 className="text-xl font-bold mb-4 text-blue-900 dark:text-blue-400">Raw Data</h2>
-
-            {/* Sheet Tabs */}
-            <div className="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto pb-1">
-                {keys.map(key => (
-                    <button
-                        key={key}
-                        onClick={() => setActiveSheet(key)}
-                        className={`py-2 px-4 rounded-t-lg font-medium text-sm whitespace-nowrap transition-colors ${activeSheet === key
-                            ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-500 dark:bg-gray-800 dark:text-indigo-400'
-                            : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800'
-                            }`}
-                    >
-                        {key}
-                    </button>
-                ))}
+            {/* Header with Tabs */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-card-bg-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+                <span className="text-xl font-bold text-gray-800 dark:text-gray-200">Raw Data</span>
+                <div className="flex space-x-2 overflow-x-auto pb-1 md:pb-0 overflow-y-hidden scrollbar-hide">
+                    {keys.map(key => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveSheet(key)}
+                            className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 ${activeSheet === key
+                                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                                : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            {key}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             {/* Content */}
