@@ -3,7 +3,7 @@ import { ArrowUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ScrollToTopProps {
-    scrollContainerRef: React.RefObject<HTMLDivElement>;
+    scrollContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export const ScrollToTop: React.FC<ScrollToTopProps> = ({ scrollContainerRef }) => {

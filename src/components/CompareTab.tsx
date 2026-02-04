@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { DataDict } from '../types';
 import { Chart } from './Chart';
 import { getColor } from '../utils/colors';
-import { getRangeTraces, IMA_RANGES, WMA_RANGES } from '../utils/referenceRanges';
+import { getRangeTraces, IMA_RANGES } from '../utils/referenceRanges';
 
 interface CompareTabProps {
     data: DataDict;
@@ -85,7 +85,7 @@ export const CompareTab: React.FC<CompareTabProps> = ({ data, isDarkMode }) => {
                 <Chart
                     title={`Comparative Trend: ${title}`}
                     data={[
-                        ...getRangeTraces(activeTab, timestamps, 'scatter'),
+                        ...getRangeTraces(activeTab, timestamps),
                         ...trendData
                     ]}
                     layout={{
