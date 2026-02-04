@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/VinCense Logo.png';
 import butterflyLogo from '../assets/butterfly.png';
-import { RefreshCw, Moon, Sun, Menu, X, Activity, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RefreshCw, Moon, Sun, Menu, X, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
 import type { DateRange } from 'react-day-picker';
