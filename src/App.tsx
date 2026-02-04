@@ -149,7 +149,7 @@ function App() {
 
   // Landing Page Mode
   if (activeTab === 'Welcome') {
-    return <WelcomeTab onStart={() => setActiveTab('Home')} isDarkMode={isDarkMode} />;
+    return <WelcomeTab onStart={() => { loadData(true); setActiveTab('Home'); }} isDarkMode={isDarkMode} />;
   }
 
   return (
