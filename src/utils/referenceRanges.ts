@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// import type { Layout } from 'plotly.js';
-=======
 import type { Layout } from 'plotly.js';
->>>>>>> 13725ae (Updated code commited)
 
 export interface ReferenceRange {
     min: number;
@@ -41,11 +37,7 @@ const COLOR_WMA = 'rgba(59, 130, 246, 0.15)'; // Blue-500 low opacity
 const BORDER_IMA = 'rgba(34, 197, 94, 0.6)';
 const BORDER_WMA = 'rgba(59, 130, 246, 0.6)';
 
-<<<<<<< HEAD
-export const getRangeTraces = (vitalKey: string, xData: any[]) => {
-=======
 export const getRangeTraces = (vitalKey: string, xData: any[], type: 'scatter' | 'category' = 'scatter') => {
->>>>>>> 13725ae (Updated code commited)
     const traces: any[] = [];
     if (!xData || xData.length === 0) return traces;
 
