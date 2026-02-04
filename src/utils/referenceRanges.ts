@@ -37,7 +37,7 @@ const COLOR_WMA = 'rgba(59, 130, 246, 0.15)'; // Blue-500 low opacity
 const BORDER_IMA = 'rgba(34, 197, 94, 0.6)';
 const BORDER_WMA = 'rgba(59, 130, 246, 0.6)';
 
-export const getRangeTraces = (vitalKey: string, xData: any[]) => {
+export const getRangeTraces = (vitalKey: string, xData: any[], type: string = 'scatter') => {
     const traces: any[] = [];
     if (!xData || xData.length === 0) return traces;
 
@@ -60,7 +60,7 @@ export const getRangeTraces = (vitalKey: string, xData: any[]) => {
             legendgroup: group,
             visible: defaultVisible,
             hoverinfo: 'skip',
-            type: 'scatter'
+            type: type
         });
 
         // Trace 2: Upper Bound (Visible in legend, fills to next Y i.e. Lower Bound)
@@ -76,7 +76,7 @@ export const getRangeTraces = (vitalKey: string, xData: any[]) => {
             legendgroup: group,
             visible: defaultVisible,
             hoverinfo: 'skip',
-            type: 'scatter'
+            type: type
         });
     };
 
