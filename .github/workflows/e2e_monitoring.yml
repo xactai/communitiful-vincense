@@ -1,13 +1,13 @@
 name: Periodic E2E Monitoring
 
 on:
-  push:
+
 #   branches:
-  #    - main
-  #schedule:
-  #- cron: '30 0,6,12,18 * * *'
- # workflow_dispatch:
-    # Allows manual triggering of the workflow
+#    - main
+#schedule:
+#- cron: '30 0,6,12,18 * * *'
+# workflow_dispatch:
+# Allows manual triggering of the workflow
 
 jobs:
   test:
@@ -16,22 +16,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          
+
       - name: Install dependencies
         run: npm ci || npm install
-        
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-        
+
       - name: Run Playwright tests
         id: playwright
         run: |
           npx playwright test
-          
+
       - name: Upload Report
         uses: actions/upload-artifact@v4
         if: always()
@@ -49,42 +49,39 @@ jobs:
           server_port: ${{ secrets.SMTP_PORT }}
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
-      
+
           # Email metadata
           from: "VinCense Dashboard Monitoring <${{ secrets.SMTP_USERNAME }}>"
           to: ${{ secrets.MAIL_TO }}
           subject: "Health Check Report — VinCense Dashboard"
-    
-          
+
           # Email body (Plain text / minimal Markdown)
           body: |
             End-to-End Monitoring Report
-          
+
             Overall Status: Overall Status: ${{ job.status == 'success' && '🟢 SUCCESS' || '🔴 FAILURE' }}
 
             ${{ job.status == 'success'
             && 'All health checks have passed successfully. No issues were detected during this monitoring run.'
             || 'One or more health checks have failed during this monitoring run. Immediate attention may be required.' }}
 
-          
+
             The scheduled end-to-end monitoring Health Check tests for Communitiful have completed.
             Below is a summary of the health checks executed during this run.
-          
+
             Test Results Summary
-          
+
             VinCense GH Pages web -app 
             Test File: tests/vincense_main.test.ts
             Purpose: Verifies that https://xactai.github.io/VinCense is reachable and responding correctly.
-          
-           
+
+
             Action Run Details
             https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          
+
             The Playwright HTML report can be viewed and downloaded from the Artifacts section of the action run.
-          
+
             This is an automated monitoring notification from Communitiful.
 
-      
           convert_markdown: true
           ignore_cert: true
-      
