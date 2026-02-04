@@ -36,6 +36,8 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
+      - name: Download Data
+        run: curl -L "https://docs.google.com/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx" -o public/vitals.xlsx
       - name: Install dependencies
         run: npm ci
       - name: Build
