@@ -2,9 +2,11 @@ import * as XLSX from 'xlsx';
 import { format } from 'date-fns';
 import type { DataDict, Reading } from '../types';
 
+const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx";
+
 const EXCEL_URL = import.meta.env.DEV
   ? '/api/vitals'
-  : "https://docs.google.com/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx";
+  : `https://api.allorigins.win/raw?url=${encodeURIComponent(GOOGLE_SHEET_URL)}`;
 
 export const fetchAndParseData = async (): Promise<DataDict> => {
   try {
