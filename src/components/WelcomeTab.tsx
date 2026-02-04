@@ -1,6 +1,7 @@
 import React from 'react';
+import logo from '../assets/VinCense Logo.png';
 import { motion } from 'framer-motion';
-import { Activity, Heart, Wind, Thermometer, ShieldCheck, BarChart2, MousePointer, Info } from 'lucide-react';
+import { Activity, Heart, Wind, Thermometer, ShieldCheck, BarChart2, MousePointer } from 'lucide-react';
 
 interface WelcomeTabProps {
     onStart: () => void;
@@ -43,7 +44,7 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                 {/* 1. Identity & Overview */}
                 <motion.div className="text-center space-y-6" variants={itemVariants}>
                     <div className="inline-block mb-4">
-                        <img src="/vincense_logo.png" alt="VinCense Logo" className="h-32 w-auto mx-auto" />
+                        <img src={logo} alt="VinCense Logo" className="h-32 w-auto mx-auto" />
                     </div>
                     <h1 className={`text-4xl md:text-5xl font-extrabold ${textColor} tracking-tight`}>
                         VinCense <span className="text-indigo-600 dark:text-indigo-400">Vitals Dashboard</span>

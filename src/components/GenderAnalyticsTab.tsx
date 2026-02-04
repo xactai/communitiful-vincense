@@ -167,11 +167,7 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Gendered Distribution (Normal Range)</h4>
                             <Plot
                                 data={[
-<<<<<<< HEAD
-                                    ...getRangeTraces(currentVital.key, genders),
-=======
                                     ...getRangeTraces(currentVital.key, genders, 'category'),
->>>>>>> 13725ae (Updated code commited)
                                     ...genders.map(g => ({
                                         y: currentData?.[g]?.all || [],
                                         type: 'box',
@@ -221,11 +217,7 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">AM vs PM Shift (Diurnal Delta)</h4>
                             <Plot
                                 data={[
-<<<<<<< HEAD
-                                    ...getRangeTraces(currentVital.key, ['AM', 'PM']),
-=======
                                     ...getRangeTraces(currentVital.key, ['AM', 'PM'], 'category'),
->>>>>>> 13725ae (Updated code commited)
                                     ...genders.map(g => {
                                         const amVals = currentData?.[g]?.am || [];
                                         const pmVals = currentData?.[g]?.pm || [];

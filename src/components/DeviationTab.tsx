@@ -33,19 +33,22 @@ export const DeviationTab: React.FC<DeviationTabProps> = ({ data, isDarkMode }) 
         return (
             <div>
                 {/* Sub Tabs Navigation */}
-                <div className="flex space-x-4 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
-                    {Object.keys(LABELS).map(key => (
-                        <button
-                            key={key}
-                            onClick={() => setActiveTab(key)}
-                            className={`py-2 px-4 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === key
-                                ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
-                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                                }`}
-                        >
-                            {LABELS[key]}
-                        </button>
-                    ))}
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-card-bg-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+                    <span className="text-xl font-bold text-gray-800 dark:text-gray-200">Error & Deviation Analytics: {title}</span>
+                    <div className="flex space-x-2 overflow-x-auto pb-1 md:pb-0 overflow-y-hidden scrollbar-hide">
+                        {Object.keys(LABELS).map(key => (
+                            <button
+                                key={key}
+                                onClick={() => setActiveTab(key)}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 ${activeTab === key
+                                    ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                                    : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                    }`}
+                            >
+                                {LABELS[key]}
+                            </button>
+                        ))}
+                    </div>
                 </div>
                 <div className="text-gray-500">No Data for {title}</div>
             </div>
@@ -111,22 +114,26 @@ export const DeviationTab: React.FC<DeviationTabProps> = ({ data, isDarkMode }) 
     return (
         <div>
             {/* Sub Tabs Navigation */}
-            <div className="flex space-x-4 border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto">
-                {Object.keys(LABELS).map(key => (
-                    <button
-                        key={key}
-                        onClick={() => setActiveTab(key)}
-                        className={`py-2 px-4 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === key
-                            ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                            }`}
-                    >
-                        {LABELS[key]}
-                    </button>
-                ))}
+            {/* Sub Tabs Navigation */}
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-card-bg-dark p-4 rounded-xl border border-gray-200 dark:border-gray-700 mb-6">
+                <span className="text-xl font-bold text-gray-800 dark:text-gray-200">Error & Deviation Analytics</span>
+                <div className="flex space-x-2 overflow-x-auto pb-1 md:pb-0 overflow-y-hidden scrollbar-hide">
+                    {Object.keys(LABELS).map(key => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveTab(key)}
+                            className={`px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors flex-shrink-0 ${activeTab === key
+                                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300'
+                                : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            {LABELS[key]}
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            <h2 className="text-xl font-bold mb-4 text-blue-900 dark:text-blue-400">Error & Deviation Analytics: {title}</h2>
+            <h2 className="text-xl font-bold mb-4 text-blue-900 dark:text-blue-400">{title}</h2>
 
             {/* 1. Deviation Over Time */}
             <div className="mb-12">
@@ -134,12 +141,13 @@ export const DeviationTab: React.FC<DeviationTabProps> = ({ data, isDarkMode }) 
                 {devCols.length > 0 ? (
                     <Chart
                         title={`Temporal Deviation Trends: ${title}`}
-                        data={devCols.map(col => ({
+                        data={devCols.map((col, i) => ({
                             x: timestamps,
                             y: sortedDf.map(r => r[col]),
                             type: 'scatter',
                             mode: 'lines+markers',
                             name: col,
+                            visible: i < 2 ? true : 'legendonly',
                             line: { shape: 'linear' } // colors auto assigned or we can map
                         }))}
                         layout={{
@@ -176,7 +184,7 @@ export const DeviationTab: React.FC<DeviationTabProps> = ({ data, isDarkMode }) 
                 {activeTab === 'Temp' ? (
                     <div className="p-4 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded">Note: there is no reference device to compare the readings of skin temperature by vincense device hence there is no chart plotted</div>
                 ) : devCols.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-6">
                         {devCols.map((dCol) => {
                             // Identify Source Columns for this Deviation
                             let col1 = 'VinCense Readings';
@@ -228,7 +236,10 @@ export const DeviationTab: React.FC<DeviationTabProps> = ({ data, isDarkMode }) 
                                                 { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff - 1.96 * sdDiff, y1: meanDiff - 1.96 * sdDiff, line: { color: 'red', dash: 'dash' } }
                                             ],
                                             template: chartTemplate,
-                                            font: { color: textColor }
+                                            font: { color: textColor },
+                                            showlegend: true,
+                                            legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
+                                            margin: { r: 150 }
                                         }}
                                     />
                                 </div>

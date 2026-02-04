@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import logo from '../assets/VinCense Logo.png';
 import { RefreshCw, Moon, Sun, Menu, X, Activity, Calendar as CalendarIcon, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
@@ -81,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className={`flex items-center gap-3 mb-8 ${isCollapsed ? 'justify-center' : ''}`}>
           <div className={`flex items-center gap-3 mb-8 ${isCollapsed ? 'justify-center' : ''}`}>
             {!isCollapsed ? (
-              <img src="/vincense_sidebar_logo.png" alt="VinCense" className="h-12 w-auto object-contain mx-auto" />
+              <img src={logo} alt="VinCense" className="h-20 w-auto object-contain mx-auto" />
             ) : (
               <div className="bg-indigo-600 p-2 rounded-lg shadow-lg shadow-indigo-500/30 shrink-0">
                 <Activity className="text-white h-6 w-6" />
