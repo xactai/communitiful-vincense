@@ -2,11 +2,10 @@ import * as XLSX from 'xlsx';
 import { format } from 'date-fns';
 import type { DataDict, Reading } from '../types';
 
-const GOOGLE_SHEET_URL = "https://docs.google.com/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx";
 
 const EXCEL_URL = import.meta.env.DEV
   ? '/api/vitals'
-  : `https://corsproxy.io/?${encodeURIComponent(GOOGLE_SHEET_URL)}`;
+  : './vitals.xlsx';
 
 export const fetchAndParseData = async (): Promise<DataDict> => {
   try {
