@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import type { DataDict } from '../types';
 import Plot from 'react-plotly.js';
+import { ExpandableChart } from './ExpandableChart';
 
 
 interface Props {
@@ -139,39 +140,41 @@ export const TrustOdinComparisonTab: React.FC<Props> = ({ data, isDarkMode }) =>
                     {/* Scatter Plot */}
                     <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                         <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Brand Correlation</h4>
-                        <Plot
-                            data={[
-                                {
-                                    x: pts.map((d: any) => d.trust),
-                                    y: pts.map((d: any) => d.odin),
-                                    mode: 'markers',
-                                    type: 'scatter',
-                                    marker: { color: '#6366f1', opacity: 0.6 },
-                                    name: 'Readings'
-                                },
-                                {
-                                    x: [Math.min(...pts.map((d: any) => d.trust)), Math.max(...pts.map((d: any) => d.trust))],
-                                    y: [Math.min(...pts.map((d: any) => d.trust)), Math.max(...pts.map((d: any) => d.trust))],
-                                    mode: 'lines',
-                                    type: 'scatter',
-                                    line: { color: 'gray', dash: 'dash' },
-                                    name: 'Perfect Agreement'
-                                }
-                            ]}
-                            layout={{
-                                autosize: true,
-                                paper_bgcolor: 'transparent',
-                                plot_bgcolor: 'transparent',
-                                font: { color: textColor },
-                                xaxis: { title: `Dr Trust (${unit})`, gridcolor: gridColor },
-                                yaxis: { title: `Dr Odin (${unit})`, gridcolor: gridColor },
-                                showlegend: true,
-                                legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
-                                margin: { r: 150 }
-                            } as any}
-                            useResizeHandler={true}
-                            className="w-full h-[350px]"
-                        />
+                        <ExpandableChart title="Brand Correlation" className="h-[350px]">
+                            <Plot
+                                data={[
+                                    {
+                                        x: pts.map((d: any) => d.trust),
+                                        y: pts.map((d: any) => d.odin),
+                                        mode: 'markers',
+                                        type: 'scatter',
+                                        marker: { color: '#6366f1', opacity: 0.6 },
+                                        name: 'Readings'
+                                    },
+                                    {
+                                        x: [Math.min(...pts.map((d: any) => d.trust)), Math.max(...pts.map((d: any) => d.trust))],
+                                        y: [Math.min(...pts.map((d: any) => d.trust)), Math.max(...pts.map((d: any) => d.trust))],
+                                        mode: 'lines',
+                                        type: 'scatter',
+                                        line: { color: 'gray', dash: 'dash' },
+                                        name: 'Perfect Agreement'
+                                    }
+                                ]}
+                                layout={{
+                                    autosize: true,
+                                    paper_bgcolor: 'transparent',
+                                    plot_bgcolor: 'transparent',
+                                    font: { color: textColor },
+                                    xaxis: { title: `Dr Trust (${unit})`, gridcolor: gridColor },
+                                    yaxis: { title: `Dr Odin (${unit})`, gridcolor: gridColor },
+                                    showlegend: true,
+                                    legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
+                                    margin: { r: 150 }
+                                } as any}
+                                useResizeHandler={true}
+                                className="w-full h-full"
+                            />
+                        </ExpandableChart>
                         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
                             <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 uppercase mb-1">Chart Description</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Scatter plot showing the relationship between Dr Trust and Dr Odin readings. The dashed line represents perfect agreement.</p>
@@ -185,36 +188,38 @@ export const TrustOdinComparisonTab: React.FC<Props> = ({ data, isDarkMode }) =>
                     {/* Bland-Altman Plot */}
                     <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                         <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Bland-Altman Analysis</h4>
-                        <Plot
-                            data={[
-                                {
-                                    x: pts.map((d: any) => d.avg),
-                                    y: pts.map((d: any) => d.diff),
-                                    mode: 'markers',
-                                    type: 'scatter',
-                                    marker: { color: '#ec4899', opacity: 0.6 },
-                                    name: 'Difference'
-                                }
-                            ]}
-                            layout={{
-                                autosize: true,
-                                paper_bgcolor: 'transparent',
-                                plot_bgcolor: 'transparent',
-                                font: { color: textColor },
-                                xaxis: { title: `Average Value (${unit})`, gridcolor: gridColor },
-                                yaxis: { title: `Difference (Trust - Odin) (${unit})`, gridcolor: gridColor },
-                                shapes: [
-                                    { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff, y1: meanDiff, line: { color: 'blue', width: 2 } },
-                                    { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff + 1.96 * sdDiff, y1: meanDiff + 1.96 * sdDiff, line: { color: 'red', dash: 'dot' } },
-                                    { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff - 1.96 * sdDiff, y1: meanDiff - 1.96 * sdDiff, line: { color: 'red', dash: 'dot' } }
-                                ],
-                                showlegend: true,
-                                legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
-                                margin: { r: 150 }
-                            } as any}
-                            useResizeHandler={true}
-                            className="w-full h-[350px]"
-                        />
+                        <ExpandableChart title="Bland-Altman Analysis" className="h-[350px]">
+                            <Plot
+                                data={[
+                                    {
+                                        x: pts.map((d: any) => d.avg),
+                                        y: pts.map((d: any) => d.diff),
+                                        mode: 'markers',
+                                        type: 'scatter',
+                                        marker: { color: '#ec4899', opacity: 0.6 },
+                                        name: 'Difference'
+                                    }
+                                ]}
+                                layout={{
+                                    autosize: true,
+                                    paper_bgcolor: 'transparent',
+                                    plot_bgcolor: 'transparent',
+                                    font: { color: textColor },
+                                    xaxis: { title: `Average Value (${unit})`, gridcolor: gridColor },
+                                    yaxis: { title: `Difference (Trust - Odin) (${unit})`, gridcolor: gridColor },
+                                    shapes: [
+                                        { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff, y1: meanDiff, line: { color: 'blue', width: 2 } },
+                                        { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff + 1.96 * sdDiff, y1: meanDiff + 1.96 * sdDiff, line: { color: 'red', dash: 'dot' } },
+                                        { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: meanDiff - 1.96 * sdDiff, y1: meanDiff - 1.96 * sdDiff, line: { color: 'red', dash: 'dot' } }
+                                    ],
+                                    showlegend: true,
+                                    legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
+                                    margin: { r: 150 }
+                                } as any}
+                                useResizeHandler={true}
+                                className="w-full h-full"
+                            />
+                        </ExpandableChart>
                         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
                             <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 uppercase mb-1">Chart Description</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Plots the difference between devices against their average. Blue line is the mean bias, red dotted lines are 95% limits of agreement.</p>
@@ -231,27 +236,29 @@ export const TrustOdinComparisonTab: React.FC<Props> = ({ data, isDarkMode }) =>
                     {/* Histogram */}
                     <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                         <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Discrepancy Distribution</h4>
-                        <Plot
-                            data={[{
-                                x: ['0-2 Units', '2-5 Units', '5+ Units'],
-                                y: [diffDistribution['0-2'], diffDistribution['2-5'], diffDistribution['5+']],
-                                type: 'bar',
-                                marker: { color: ['#10b981', '#f59e0b', '#ef4444'] }
-                            }]}
-                            layout={{
-                                autosize: true,
-                                paper_bgcolor: 'transparent',
-                                plot_bgcolor: 'transparent',
-                                font: { color: textColor },
-                                yaxis: { title: 'Count', gridcolor: gridColor },
-                                xaxis: { title: 'Absolute Difference Range' },
-                                showlegend: true,
-                                legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
-                                margin: { r: 150 }
-                            } as any}
-                            useResizeHandler={true}
-                            className="w-full h-[300px]"
-                        />
+                        <ExpandableChart title="Discrepancy Distribution" className="h-[300px]">
+                            <Plot
+                                data={[{
+                                    x: ['0-2 Units', '2-5 Units', '5+ Units'],
+                                    y: [diffDistribution['0-2'], diffDistribution['2-5'], diffDistribution['5+']],
+                                    type: 'bar',
+                                    marker: { color: ['#10b981', '#f59e0b', '#ef4444'] }
+                                }]}
+                                layout={{
+                                    autosize: true,
+                                    paper_bgcolor: 'transparent',
+                                    plot_bgcolor: 'transparent',
+                                    font: { color: textColor },
+                                    yaxis: { title: 'Count', gridcolor: gridColor },
+                                    xaxis: { title: 'Absolute Difference Range' },
+                                    showlegend: true,
+                                    legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
+                                    margin: { r: 150 }
+                                } as any}
+                                useResizeHandler={true}
+                                className="w-full h-full"
+                            />
+                        </ExpandableChart>
                         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
                             <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 uppercase mb-1">Chart Description</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Frequency of absolute differences grouped by magnitude severity.</p>
@@ -265,28 +272,30 @@ export const TrustOdinComparisonTab: React.FC<Props> = ({ data, isDarkMode }) =>
                     {/* Donut Chart */}
                     <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                         <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Reliability (±2% Agreement)</h4>
-                        <Plot
-                            data={[{
-                                labels: ['Good Agreement (<2%)', 'Discrepancy (>2%)'],
-                                values: [within2Percent, total - within2Percent],
-                                type: 'pie',
-                                hole: 0.6,
-                                marker: { colors: ['#10b981', '#ef4444'] },
-                                textinfo: 'label+percent',
-                                textposition: 'outside'
-                            }]}
-                            layout={{
-                                autosize: true,
-                                paper_bgcolor: 'transparent',
-                                plot_bgcolor: 'transparent',
-                                font: { color: textColor },
-                                showlegend: true,
-                                legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
-                                margin: { r: 150 }
-                            } as any}
-                            useResizeHandler={true}
-                            className="w-full h-[300px]"
-                        />
+                        <ExpandableChart title="Reliability (±2% Agreement)" className="h-[300px]">
+                            <Plot
+                                data={[{
+                                    labels: ['Good Agreement (<2%)', 'Discrepancy (>2%)'],
+                                    values: [within2Percent, total - within2Percent],
+                                    type: 'pie',
+                                    hole: 0.6,
+                                    marker: { colors: ['#10b981', '#ef4444'] },
+                                    textinfo: 'label+percent',
+                                    textposition: 'outside'
+                                }]}
+                                layout={{
+                                    autosize: true,
+                                    paper_bgcolor: 'transparent',
+                                    plot_bgcolor: 'transparent',
+                                    font: { color: textColor },
+                                    showlegend: true,
+                                    legend: { orientation: 'v', x: 1.02, y: 1, xanchor: 'left', yanchor: 'top' },
+                                    margin: { r: 150 }
+                                } as any}
+                                useResizeHandler={true}
+                                className="w-full h-full"
+                            />
+                        </ExpandableChart>
                         <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
                             <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 uppercase mb-1">Chart Description</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Percentage of readings where Dr Trust and Dr Odin differ by less than ±2%.</p>
@@ -301,30 +310,32 @@ export const TrustOdinComparisonTab: React.FC<Props> = ({ data, isDarkMode }) =>
                 {/* Bottom: Circumstance Heatmap */}
                 <div className="bg-white dark:bg-card-bg-dark p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mt-8">
                     <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Average Absolute Deviation by Circumstance</h4>
-                    <Plot
-                        data={[{
-                            x: Object.keys(byCircumstance),
-                            y: [activeTab],
-                            z: [Object.values(byCircumstance).map((divs: any) => divs.reduce((a: number, b: number) => a + b, 0) / divs.length)],
-                            type: 'heatmap',
-                            colorscale: 'RdBu',
-                            reversescale: true,
-                            showscale: true
-                        }]}
-                        layout={{
-                            autosize: true,
-                            paper_bgcolor: 'transparent',
-                            plot_bgcolor: 'transparent',
-                            font: { color: textColor },
-                            xaxis: {
-                                tickangle: 45, // Positive 45 to rotate label down-right
-                                automargin: true
-                            },
-                            margin: { b: 100 }
-                        } as any}
-                        useResizeHandler={true}
-                        className="w-full h-[300px]"
-                    />
+                    <ExpandableChart title="Average Absolute Deviation by Circumstance" className="h-[300px]">
+                        <Plot
+                            data={[{
+                                x: Object.keys(byCircumstance),
+                                y: [activeTab],
+                                z: [Object.values(byCircumstance).map((divs: any) => divs.reduce((a: number, b: number) => a + b, 0) / divs.length)],
+                                type: 'heatmap',
+                                colorscale: 'RdBu',
+                                reversescale: true,
+                                showscale: true
+                            }]}
+                            layout={{
+                                autosize: true,
+                                paper_bgcolor: 'transparent',
+                                plot_bgcolor: 'transparent',
+                                font: { color: textColor },
+                                xaxis: {
+                                    tickangle: 45, // Positive 45 to rotate label down-right
+                                    automargin: true
+                                },
+                                margin: { b: 100 }
+                            } as any}
+                            useResizeHandler={true}
+                            className="w-full h-full"
+                        />
+                    </ExpandableChart>
                     <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
                         <h4 className="font-bold text-sm text-gray-700 dark:text-gray-300 uppercase mb-1">Chart Description</h4>
                         <p className="text-sm text-gray-600 dark:text-gray-400">Heatmap visualization of the average absolute error across different user activities.</p>

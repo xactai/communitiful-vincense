@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { format } from 'date-fns';
 import type { DataDict } from '../types';
 import { exportCSV, exportExcel, exportPDF, exportDOCX } from '../utils/export';
 import { FileText, FileSpreadsheet, FileJson, File } from 'lucide-react';
@@ -18,10 +19,18 @@ export const SourceTab: React.FC<SourceTabProps> = ({ data }) => {
 
     if (!activeSheet || !data[activeSheet]) return <div>No Data Available</div>;
 
-    const displayData = data[activeSheet].map(({ Timestamp, Date: DateObj, ...rest }) => ({
+    const sortedData = [...data[activeSheet]].sort((a, b) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const dateA = a.Date instanceof Date ? a.Date.getTime() : new Date((a as any).Date || 0).getTime();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const dateB = b.Date instanceof Date ? b.Date.getTime() : new Date((b as any).Date || 0).getTime();
+        return dateB - dateA;
+    });
+
+    const displayData = sortedData.map(({ Timestamp, Date: DateObj, ...rest }) => ({
         // Format Date for display
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        Date: DateObj instanceof Date ? DateObj.toLocaleDateString('en-GB') : (rest as any)['Date'], // DD/MM/YYYY
+        Date: DateObj instanceof Date ? format(DateObj, 'dd MMM yyyy') : (rest as any)['Date'], // DD MMM YYYY
         ...rest
     }));
 
@@ -50,6 +59,24 @@ export const SourceTab: React.FC<SourceTabProps> = ({ data }) => {
 
             {/* Content */}
             <div className="bg-white dark:bg-card-bg-dark rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+
+                {/* Age Group Legend */}
+                <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-700 text-sm">
+                    <span className="font-bold text-gray-700 dark:text-gray-300">Age Group Ranges:</span>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        <span className="text-gray-600 dark:text-gray-400">Young Adult (18-25)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+                        <span className="text-gray-600 dark:text-gray-400">Adult (25-50)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-indigo-500"></span>
+                        <span className="text-gray-600 dark:text-gray-400">Senior (51+)</span>
+                    </div>
+                </div>
+
                 <h3 className="text-lg font-semibold mb-4">Sheet: {activeSheet}</h3>
 
                 {/* Table */}
