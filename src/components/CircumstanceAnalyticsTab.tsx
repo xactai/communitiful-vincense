@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import type { DataDict } from '../types';
 import Plot from 'react-plotly.js';
 import { getRangeTraces } from '../utils/referenceRanges';
+import { ExpandableChart } from './ExpandableChart';
 
 interface Props {
     data: DataDict;
@@ -72,18 +73,15 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
             });
         });
 
-        // Custom sort order if possible (Resting first, then Walking, etc)
-        const order = ['Resting', 'Sitting', 'Standing', 'Walking', 'Running', 'Post-Exercise']; // Example order
+        // Sort by Count Descending
         const sortedCircumstances = Array.from(allCircumstances).sort((a, b) => {
-            // Try to find index in predefined order, otherwise alpha
-            const ia = order.findIndex(o => a.toLowerCase().includes(o.toLowerCase()));
-            const ib = order.findIndex(o => b.toLowerCase().includes(o.toLowerCase()));
-
-            if (ia !== -1 && ib !== -1) return ia - ia; // Wait, ia - ib
-            if (ia !== -1 && ib !== -1) return ia - ib;
-            if (ia !== -1) return -1;
-            if (ib !== -1) return 1;
-            return a.localeCompare(b);
+            const getCount = (circumstance: string) => {
+                return vitals.reduce((max, v) => {
+                    const len = processed[v.key]?.[circumstance]?.['VinCense']?.length || 0;
+                    return Math.max(max, len);
+                }, 0);
+            };
+            return getCount(b) - getCount(a);
         });
 
         return { processed, sortedCircumstances };
@@ -103,6 +101,7 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
     }
 
     const [activeVital, setActiveVital] = useState<string>('Pulse');
+
     const currentVital = vitals.find(v => v.key === activeVital) || vitals[0];
 
     return (
@@ -153,8 +152,8 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Chart 1: Mean Comparison by Circumstance */}
-                    <div className="h-[400px]">
-                        <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Mean Readings by Circumstance</h4>
+                    <ExpandableChart title="Mean Readings by Circumstance" className="h-[400px] border border-gray-100 dark:border-gray-800 rounded-lg bg-white dark:bg-card-bg-dark">
+                        <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center pt-4">Mean Readings by Circumstance</h4>
                         <Plot
                             data={[
                                 ...getRangeTraces(currentVital.key, sortedCircumstances),
@@ -190,7 +189,7 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                                 paper_bgcolor: 'transparent',
                                 plot_bgcolor: 'transparent',
                                 font: { color: textColor },
-                                margin: { b: 150, l: 60, r: 20, t: 100 },
+                                margin: { b: 150, l: 60, r: 20, t: 50 }, // Adjusted top margin
                                 xaxis: {
                                     gridcolor: gridColor,
                                     title: 'Circumstance',
@@ -202,13 +201,13 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                                     title: `Mean ${currentVital.unit}`,
                                     automargin: true
                                 },
-                                legend: { orientation: 'h', x: 0, y: 1.2 },
-                                // shapes: getReferenceShapes(vital.key, showIMA, showWMA, isDarkMode) // Removed
+                                legend: { orientation: 'h', x: 0, y: 1.1 },
                             } as any}
                             useResizeHandler={true}
                             config={{ responsive: true }}
+                            className="w-full h-full"
                         />
-                    </div>
+                    </ExpandableChart>
                     {/* Insight 1 */}
                     {/* Chart Description */}
                     <div className="col-span-1 lg:col-span-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400 mb-2">
@@ -226,6 +225,7 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                     </div>
 
                     {/* Chart 2: Distribution (Box Plot) - VinCense */}
+<<<<<<< HEAD
                     <div className="col-span-1 lg:col-span-2 h-[500px] overflow-x-auto w-full border border-gray-100 dark:border-gray-800 rounded-lg">
                         <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center sticky left-0 w-full pt-4">VinCense Distribution</h4>
                         <div style={{ width: '100%', height: '100%' }}>
@@ -285,6 +285,69 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
                                 style={{ width: '100%', height: '100%' }}
                             />
                         </div>
+=======
+                    <div className="col-span-1 lg:col-span-2">
+                        <ExpandableChart title="VinCense Distribution" className="h-[500px] border border-gray-100 dark:border-gray-800 rounded-lg bg-white dark:bg-card-bg-dark">
+                            <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center sticky left-0 w-full pt-4">VinCense Distribution</h4>
+                            <div style={{ width: '100%', height: 'calc(100% - 30px)' }}>
+                                <Plot
+                                    data={[
+                                        // 1. Box Plots First
+                                        ...sortedCircumstances.map(c => {
+                                            const vals = processed[currentVital.key]?.[c]?.['VinCense'] || [];
+                                            return {
+                                                y: vals,
+                                                name: c,
+                                                type: 'box',
+                                                boxpoints: 'all',
+                                                jitter: 0.3,
+                                                pointpos: -1.8,
+                                                marker: { size: 2 },
+                                            };
+                                        }),
+                                        // 2. Range Traces Last (for Bottom/End of Legend)
+                                        ...getRangeTraces(currentVital.key, sortedCircumstances, 'category')
+                                    ]}
+                                    layout={{
+                                        autosize: true, // Auto-size to container (1400px)
+                                        paper_bgcolor: 'transparent',
+                                        plot_bgcolor: 'transparent',
+                                        font: { color: textColor },
+                                        showlegend: true,
+                                        legend: {
+                                            orientation: 'v', // Vertical legend
+                                            x: 1.02, // Right side
+                                            y: 1, // Top alignment
+                                            xanchor: 'left',
+                                            yanchor: 'top',
+                                            bgcolor: 'rgba(255, 255, 255, 0.5)' // semi-transparent background
+                                        },
+                                        margin: {
+                                            b: 180, // Bottom margin for -45 labels
+                                            l: 60,
+                                            r: 250, // Right margin for vertical legend
+                                            t: 80 // Reduced top margin for cleaner title
+                                        },
+                                        xaxis: {
+                                            gridcolor: gridColor,
+                                            title: 'Circumstance',
+                                            tickangle: -45,
+                                            automargin: false
+                                        },
+                                        yaxis: {
+                                            gridcolor: gridColor,
+                                            title: currentVital.unit,
+                                            automargin: true,
+                                        },
+                                    } as any}
+                                    useResizeHandler={true}
+                                    config={{ responsive: true }}
+                                    className="w-full h-full"
+                                    style={{ width: '100%', height: '100%' }}
+                                />
+                            </div>
+                        </ExpandableChart>
+>>>>>>> a0d908f (local repo push changes)
                     </div>
                     {/* Insight 2 */}
                     {/* Chart Description */}

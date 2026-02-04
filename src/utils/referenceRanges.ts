@@ -42,7 +42,7 @@ export const getRangeTraces = (vitalKey: string, xData: any[]) => {
     if (!xData || xData.length === 0) return traces;
 
     // Helper to generate trace pair
-    const addRangeTraces = (range: ReferenceRange, name: string, fillColor: string, borderColor: string, group: string) => {
+    const addRangeTraces = (range: ReferenceRange, name: string, fillColor: string, borderColor: string, group: string, defaultVisible: boolean | 'legendonly' = 'legendonly') => {
         // We need 2 traces: Lower Bound and Upper Bound
         // They should share a legendgroup so they toggle together.
 
@@ -58,7 +58,7 @@ export const getRangeTraces = (vitalKey: string, xData: any[]) => {
             line: { color: borderColor, width: 1, dash: 'dash' },
             showlegend: false,
             legendgroup: group,
-            visible: 'legendonly', // Default hidden
+            visible: defaultVisible,
             hoverinfo: 'skip',
             type: 'scatter'
         });
@@ -74,18 +74,18 @@ export const getRangeTraces = (vitalKey: string, xData: any[]) => {
             name: name,
             showlegend: true,
             legendgroup: group,
-            visible: 'legendonly', // Default hidden
+            visible: defaultVisible,
             hoverinfo: 'skip',
             type: 'scatter'
         });
     };
 
     if (WMA_RANGES[vitalKey]) {
-        addRangeTraces(WMA_RANGES[vitalKey], 'WMA Normal Range', COLOR_WMA, BORDER_WMA, `WMA-${vitalKey}`);
+        addRangeTraces(WMA_RANGES[vitalKey], 'WMA Normal Range', COLOR_WMA, BORDER_WMA, `WMA-${vitalKey}`, 'legendonly');
     }
 
     if (IMA_RANGES[vitalKey]) {
-        addRangeTraces(IMA_RANGES[vitalKey], 'IMA Normal Range', COLOR_IMA, BORDER_IMA, `IMA-${vitalKey}`);
+        addRangeTraces(IMA_RANGES[vitalKey], 'IMA Normal Range', COLOR_IMA, BORDER_IMA, `IMA-${vitalKey}`, true);
     }
 
     return traces;

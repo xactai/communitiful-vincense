@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/VinCense Logo.png';
-import { RefreshCw, Moon, Sun, Menu, X, Activity, Calendar as CalendarIcon, ChevronDown } from 'lucide-react';
+import butterflyLogo from '../assets/butterfly.png';
+import { RefreshCw, Moon, Sun, Menu, X, Activity, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
 import type { DateRange } from 'react-day-picker';
@@ -73,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           className="absolute -right-3 top-8 bg-white dark:bg-card-bg-dark border border-gray-200 dark:border-gray-700 rounded-full p-1 shadow-md hover:bg-gray-50 focus:outline-none z-50 text-gray-500 hover:text-indigo-600 transition-colors"
           style={{ right: '-12px' }}
         >
-          {isCollapsed ? <Menu size={16} /> : <X size={16} />}
+          {isCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
       )}
 
@@ -84,9 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {!isCollapsed ? (
               <img src={logo} alt="VinCense" className="h-20 w-auto object-contain mx-auto" />
             ) : (
-              <div className="bg-indigo-600 p-2 rounded-lg shadow-lg shadow-indigo-500/30 shrink-0">
-                <Activity className="text-white h-6 w-6" />
-              </div>
+              <img src={butterflyLogo} alt="VinCense" className="h-10 w-10 object-contain mx-auto" />
             )}
           </div>
         </div>

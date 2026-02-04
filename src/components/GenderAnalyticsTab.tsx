@@ -3,6 +3,7 @@ import type { DataDict } from '../types';
 import Plot from 'react-plotly.js';
 import { format } from 'date-fns';
 import { getRangeTraces } from '../utils/referenceRanges';
+import { ExpandableChart } from './ExpandableChart';
 
 interface Props {
     data: DataDict;
@@ -165,6 +166,7 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 h-[450px] bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Gendered Distribution (Normal Range)</h4>
+<<<<<<< HEAD
                             <Plot
                                 data={[
                                     ...getRangeTraces(currentVital.key, genders),
@@ -192,6 +194,37 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                 useResizeHandler={true}
                                 className="w-full h-full"
                             />
+=======
+                            <ExpandableChart title="Gendered Distribution" className="h-full">
+                                <Plot
+                                    data={[
+                                        ...getRangeTraces(currentVital.key, genders, 'category'),
+                                        ...genders.map(g => ({
+                                            y: currentData?.[g]?.all || [],
+                                            type: 'box',
+                                            name: g,
+                                            boxpoints: 'outliers',
+                                            jitter: 0.3,
+                                            pointpos: -1.8,
+                                            marker: { color: g === 'Male' ? '#3b82f6' : '#ec4899' }
+                                        }))
+                                    ] as any}
+                                    layout={{
+                                        autosize: true,
+                                        paper_bgcolor: 'transparent',
+                                        plot_bgcolor: 'transparent',
+                                        font: { color: textColor },
+                                        xaxis: { gridcolor: gridColor, showgrid: false },
+                                        yaxis: { gridcolor: gridColor, title: currentVital.unit },
+                                        showlegend: true,
+                                        legend: { orientation: 'h', y: 1.05 },
+                                        margin: { l: 50, r: 20, t: 30, b: 30 }
+                                    } as any}
+                                    useResizeHandler={true}
+                                    className="w-full h-full"
+                                />
+                            </ExpandableChart>
+>>>>>>> a0d908f (local repo push changes)
                         </div>
                         <div className="xl:col-span-1 space-y-4 flex flex-col justify-center">
                             <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
@@ -215,6 +248,7 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 h-[450px] bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">AM vs PM Shift (Diurnal Delta)</h4>
+<<<<<<< HEAD
                             <Plot
                                 data={[
                                     ...getRangeTraces(currentVital.key, ['AM', 'PM']),
@@ -223,32 +257,44 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                         const pmVals = currentData?.[g]?.pm || [];
                                         const amMean = calculateStats(amVals).mean;
                                         const pmMean = calculateStats(pmVals).mean;
+=======
+                            <ExpandableChart title="AM vs PM Shift" className="h-full">
+                                <Plot
+                                    data={[
+                                        ...getRangeTraces(currentVital.key, ['AM', 'PM'], 'category'),
+                                        ...genders.map(g => {
+                                            const amVals = currentData?.[g]?.am || [];
+                                            const pmVals = currentData?.[g]?.pm || [];
+                                            const amMean = calculateStats(amVals).mean;
+                                            const pmMean = calculateStats(pmVals).mean;
+>>>>>>> a0d908f (local repo push changes)
 
-                                        return {
-                                            x: ['AM', 'PM'],
-                                            y: [amMean, pmMean],
-                                            type: 'scatter',
-                                            mode: 'lines+markers',
-                                            name: g,
-                                            line: { width: 3, color: g === 'Male' ? '#3b82f6' : '#ec4899' },
-                                            marker: { size: 10 }
-                                        };
-                                    })
-                                ] as any}
-                                layout={{
-                                    autosize: true,
-                                    paper_bgcolor: 'transparent',
-                                    plot_bgcolor: 'transparent',
-                                    font: { color: textColor },
-                                    xaxis: { gridcolor: gridColor, showgrid: false },
-                                    yaxis: { gridcolor: gridColor, title: `Mean ${currentVital.unit}` },
-                                    showlegend: true,
-                                    legend: { orientation: 'h', y: 1.05 },
-                                    margin: { l: 50, r: 20, t: 30, b: 30 }
-                                } as any}
-                                useResizeHandler={true}
-                                className="w-full h-full"
-                            />
+                                            return {
+                                                x: ['AM', 'PM'],
+                                                y: [amMean, pmMean],
+                                                type: 'scatter',
+                                                mode: 'lines+markers',
+                                                name: g,
+                                                line: { width: 3, color: g === 'Male' ? '#3b82f6' : '#ec4899' },
+                                                marker: { size: 10 }
+                                            };
+                                        })
+                                    ] as any}
+                                    layout={{
+                                        autosize: true,
+                                        paper_bgcolor: 'transparent',
+                                        plot_bgcolor: 'transparent',
+                                        font: { color: textColor },
+                                        xaxis: { gridcolor: gridColor, showgrid: false },
+                                        yaxis: { gridcolor: gridColor, title: `Mean ${currentVital.unit}` },
+                                        showlegend: true,
+                                        legend: { orientation: 'h', y: 1.05 },
+                                        margin: { l: 50, r: 20, t: 30, b: 30 }
+                                    } as any}
+                                    useResizeHandler={true}
+                                    className="w-full h-full"
+                                />
+                            </ExpandableChart>
                         </div>
                         <div className="xl:col-span-1 space-y-4 flex flex-col justify-center">
                             <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
@@ -272,40 +318,42 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
                         <div className="xl:col-span-2 h-[450px] bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">
                             <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center">Stability Index (CV Over Time)</h4>
-                            <Plot
-                                data={[
-                                    // Stability is CV (ratio), so we don't usually overlay absolute ranges (beats/min) on it.
-                                    // The IMA/WMA ranges (e.g. 60-100 bpm) are not relevant for CV axis (usually 0.0 - 0.2 etc).
-                                    // SKIP ranges for Stability Index.
-                                    ...genders.map(g => {
-                                        const daily = currentData?.[g]?.daily || {};
-                                        const sortedDates = Object.keys(daily).sort();
-                                        const yVals = sortedDates.map(d => calculateStats(daily[d]).cv);
+                            <ExpandableChart title="Stability Index" className="h-full">
+                                <Plot
+                                    data={[
+                                        // Stability is CV (ratio), so we don't usually overlay absolute ranges (beats/min) on it.
+                                        // The IMA/WMA ranges (e.g. 60-100 bpm) are not relevant for CV axis (usually 0.0 - 0.2 etc).
+                                        // SKIP ranges for Stability Index.
+                                        ...genders.map(g => {
+                                            const daily = currentData?.[g]?.daily || {};
+                                            const sortedDates = Object.keys(daily).sort();
+                                            const yVals = sortedDates.map(d => calculateStats(daily[d]).cv);
 
-                                        return {
-                                            x: sortedDates,
-                                            y: yVals,
-                                            type: 'scatter',
-                                            mode: 'lines',
-                                            name: g,
-                                            line: { shape: 'spline', width: 2, color: g === 'Male' ? '#3b82f6' : '#ec4899' }
-                                        };
-                                    })
-                                ] as any}
-                                layout={{
-                                    autosize: true,
-                                    paper_bgcolor: 'transparent',
-                                    plot_bgcolor: 'transparent',
-                                    font: { color: textColor },
-                                    xaxis: { gridcolor: gridColor, showgrid: false },
-                                    yaxis: { gridcolor: gridColor, title: 'CV (SD / Mean)', tickformat: '.2f' },
-                                    showlegend: true,
-                                    legend: { orientation: 'h', y: 1.05 },
-                                    margin: { l: 50, r: 20, t: 30, b: 30 }
-                                } as any}
-                                useResizeHandler={true}
-                                className="w-full h-full"
-                            />
+                                            return {
+                                                x: sortedDates,
+                                                y: yVals,
+                                                type: 'scatter',
+                                                mode: 'lines',
+                                                name: g,
+                                                line: { shape: 'spline', width: 2, color: g === 'Male' ? '#3b82f6' : '#ec4899' }
+                                            };
+                                        })
+                                    ] as any}
+                                    layout={{
+                                        autosize: true,
+                                        paper_bgcolor: 'transparent',
+                                        plot_bgcolor: 'transparent',
+                                        font: { color: textColor },
+                                        xaxis: { gridcolor: gridColor, showgrid: false },
+                                        yaxis: { gridcolor: gridColor, title: 'CV (SD / Mean)', tickformat: '.2f' },
+                                        showlegend: true,
+                                        legend: { orientation: 'h', y: 1.05 },
+                                        margin: { l: 50, r: 20, t: 30, b: 30 }
+                                    } as any}
+                                    useResizeHandler={true}
+                                    className="w-full h-full"
+                                />
+                            </ExpandableChart>
                         </div>
                         <div className="xl:col-span-1 space-y-4 flex flex-col justify-center">
                             <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400">
@@ -363,40 +411,42 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                 const total = normal + warning + alert;
 
                                 return (
-                                    <Plot
-                                        data={[{
-                                            labels: ['Normal', 'Warning', 'Alert'],
-                                            values: [normal, warning, alert],
-                                            type: 'pie',
-                                            hole: 0.6,
-                                            marker: {
-                                                colors: ['#10b981', '#f59e0b', '#ef4444']
-                                            },
-                                            textinfo: 'label+percent',
-                                            textposition: 'outside',
-                                            hoverinfo: 'label+value+percent'
-                                        }]}
-                                        layout={{
-                                            autosize: true,
-                                            paper_bgcolor: 'transparent',
-                                            plot_bgcolor: 'transparent',
-                                            font: { color: textColor },
-                                            showlegend: true,
-                                            legend: { orientation: 'h', y: -0.1 },
-                                            annotations: [
-                                                {
-                                                    font: { size: 20, weight: 'bold', color: textColor },
-                                                    showarrow: false,
-                                                    text: `${total}<br><span style="font-size:12px; font-weight:normal;">Readings</span>`,
-                                                    x: 0.5,
-                                                    y: 0.5
-                                                }
-                                            ],
-                                            margin: { t: 20, b: 20, l: 20, r: 20 }
-                                        } as any}
-                                        useResizeHandler={true}
-                                        className="w-full flex-1"
-                                    />
+                                    <ExpandableChart title="Zone Analysis" className="w-full flex-1">
+                                        <Plot
+                                            data={[{
+                                                labels: ['Normal', 'Warning', 'Alert'],
+                                                values: [normal, warning, alert],
+                                                type: 'pie',
+                                                hole: 0.6,
+                                                marker: {
+                                                    colors: ['#10b981', '#f59e0b', '#ef4444']
+                                                },
+                                                textinfo: 'label+percent',
+                                                textposition: 'outside',
+                                                hoverinfo: 'label+value+percent'
+                                            }]}
+                                            layout={{
+                                                autosize: true,
+                                                paper_bgcolor: 'transparent',
+                                                plot_bgcolor: 'transparent',
+                                                font: { color: textColor },
+                                                showlegend: true,
+                                                legend: { orientation: 'h', y: -0.1 },
+                                                annotations: [
+                                                    {
+                                                        font: { size: 20, weight: 'bold', color: textColor },
+                                                        showarrow: false,
+                                                        text: `${total}<br><span style="font-size:12px; font-weight:normal;">Readings</span>`,
+                                                        x: 0.5,
+                                                        y: 0.5
+                                                    }
+                                                ],
+                                                margin: { t: 20, b: 20, l: 20, r: 20 }
+                                            } as any}
+                                            useResizeHandler={true}
+                                            className="w-full flex-1"
+                                        />
+                                    </ExpandableChart>
                                 );
                             })()}
                         </div>
