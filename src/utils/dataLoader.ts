@@ -9,7 +9,7 @@ const EXCEL_URL = import.meta.env.DEV
 
 export const fetchAndParseData = async (): Promise<DataDict> => {
   try {
-    const response = await fetch(EXCEL_URL);
+    const response = await fetch(`${EXCEL_URL}${EXCEL_URL.includes('?') ? '&' : '?'}t=${Date.now()}`);
     const arrayBuffer = await response.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer, { type: 'array', cellDates: true });
 
