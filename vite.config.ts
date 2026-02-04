@@ -13,7 +13,11 @@ export default defineConfig({
         target: 'https://docs.google.com',
         changeOrigin: true,
         secure: false, // Sometimes helpful for https targets
-        rewrite: () => '/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx'
+        rewrite: (path) => {
+          const query = path.split('?')[1] || '';
+          console.log('Proxy Rewriting Path:', path, 'Query:', query);
+          return `/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx${query ? '&' + query : ''}`;
+        }
       }
     }
   }
