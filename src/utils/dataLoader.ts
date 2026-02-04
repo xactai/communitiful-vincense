@@ -5,7 +5,7 @@ import type { DataDict, Reading } from '../types';
 
 const EXCEL_URL = import.meta.env.DEV
   ? '/api/vitals'
-  : './vitals.xlsx';
+  : 'https://docs.google.com/spreadsheets/d/1moJ6MTDPs5JY3Uyut-rkCIRqDYJzjqMHxsZJKh28kvk/export?format=xlsx';
 
 export const fetchAndParseData = async (): Promise<DataDict> => {
   try {
