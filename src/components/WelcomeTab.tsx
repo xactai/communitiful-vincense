@@ -1,10 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-<<<<<<< HEAD
-import { Activity, Heart, Wind, Thermometer, ShieldCheck, BarChart2, MousePointer } from 'lucide-react';
-=======
 import { Activity, Heart, Wind, Thermometer, ShieldCheck, BarChart2, MousePointer, Info } from 'lucide-react';
->>>>>>> 13725ae (Updated code commited)
 
 interface WelcomeTabProps {
     onStart: () => void;
