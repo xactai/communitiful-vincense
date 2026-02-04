@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+<<<<<<< HEAD
   base: "/VinCense/",
+=======
+>>>>>>> 13725ae (Updated code commited)
   plugins: [react()],
   server: {
     host: true, // Allows external access

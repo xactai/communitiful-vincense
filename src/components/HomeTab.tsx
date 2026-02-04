@@ -7,7 +7,11 @@ interface HomeTabProps {
   isDarkMode: boolean;
 }
 
+<<<<<<< HEAD
 export const HomeTab: React.FC<HomeTabProps> = ({ data }) => {
+=======
+export const HomeTab: React.FC<HomeTabProps> = ({ data, isDarkMode }) => {
+>>>>>>> 13725ae (Updated code commited)
   const vitalKeys = ['Pulse', 'SpO2', 'Resp', 'Temp'];
   const labels: Record<string, string> = {
     'Pulse': 'Pulse (bpm)',
