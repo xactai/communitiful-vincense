@@ -131,23 +131,7 @@ export const HomeTab: React.FC<HomeTabProps> = ({ data }) => {
       <div className="flex flex-col mb-6">
         <h2 className="text-xl font-bold text-blue-900 dark:text-blue-400">Overview</h2>
 
-        {/* Normal Ranges Legend */}
-        <div className="mt-2 flex flex-wrap gap-4 text-xs bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
-          <span className="font-bold text-blue-800 dark:text-blue-300 self-center">Normal Ranges:</span>
-          {vitalKeys.map(key => {
-            const range = IMA_RANGES[key];
-            if (!range) return null;
-            return (
-              <div key={key} className="flex items-center gap-1.5 bg-white dark:bg-gray-800 px-2 py-1 rounded shadow-sm border border-gray-100 dark:border-gray-700">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">{labels[key].split('(')[0].trim()}:</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                  {range.min}-{range.max}
-                  <span className="text-gray-400 text-[10px] ml-0.5">{labels[key].split('(')[1].replace(')', '')}</span>
-                </span>
-              </div>
-            );
-          })}
-        </div>
+
       </div>
 
       <div className="overflow-x-auto pb-4">
@@ -155,11 +139,21 @@ export const HomeTab: React.FC<HomeTabProps> = ({ data }) => {
         <div className="min-w-[800px] grid grid-cols-4 gap-4">
 
           {/* Header Row */}
-          {vitalKeys.map(key => (
-            <div key={key} className="text-center font-bold text-gray-700 dark:text-indigo-400 uppercase tracking-wider text-sm bg-gray-100 dark:bg-gray-800 p-2 rounded-lg">
-              {labels[key]}
-            </div>
-          ))}
+          {vitalKeys.map(key => {
+            const range = IMA_RANGES[key];
+            return (
+              <div key={key} className="flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-2 rounded-lg">
+                <span className="text-center font-bold text-gray-700 dark:text-indigo-400 uppercase tracking-wider text-sm">
+                  {labels[key]}
+                </span>
+                {range && (
+                  <span className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-medium">
+                    Normal: {range.min}-{range.max}
+                  </span>
+                )}
+              </div>
+            );
+          })}
 
           {/* Device Rows */}
           {devices.map((device) => (

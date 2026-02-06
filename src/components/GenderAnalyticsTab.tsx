@@ -391,7 +391,13 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                                 plot_bgcolor: 'transparent',
                                                 font: { color: textColor },
                                                 showlegend: true,
-                                                legend: { orientation: 'h', y: -0.1 },
+                                                legend: {
+                                                    orientation: 'v',
+                                                    y: 0.5,
+                                                    yanchor: 'middle',
+                                                    x: 1.1, // Adjusted to be on the right, but close enough to stay in view if container allows
+                                                    xanchor: 'left'
+                                                },
                                                 annotations: [
                                                     {
                                                         font: { size: 20, weight: 'bold', color: textColor },
@@ -401,7 +407,7 @@ export const GenderAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) => {
                                                         y: 0.5
                                                     }
                                                 ],
-                                                margin: { t: 20, b: 20, l: 20, r: 20 }
+                                                margin: { t: 20, b: 20, l: 20, r: 100 } // Increased right margin to accommodate legend
                                             } as any}
                                             useResizeHandler={true}
                                             className="w-full flex-1"

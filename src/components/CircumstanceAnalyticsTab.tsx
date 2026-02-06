@@ -152,62 +152,64 @@ export const CircumstanceAnalyticsTab: React.FC<Props> = ({ data, isDarkMode }) 
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Chart 1: Mean Comparison by Circumstance */}
-                    <ExpandableChart title="Mean Readings by Circumstance" className="h-[400px] border border-gray-100 dark:border-gray-800 rounded-lg bg-white dark:bg-card-bg-dark">
-                        <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center pt-4">Mean Readings by Circumstance</h4>
-                        <Plot
-                            data={[
-                                ...getRangeTraces(currentVital.key, sortedCircumstances),
-                                ...['VinCense', 'Dr Trust', 'Dr Odin'].map(dev => {
-                                    const x: string[] = [];
-                                    const y: number[] = [];
+                    <div className="col-span-1 lg:col-span-2">
+                        <ExpandableChart title="Mean Readings by Circumstance" className="h-[400px] border border-gray-100 dark:border-gray-800 rounded-lg bg-white dark:bg-card-bg-dark">
+                            <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase text-center pt-4">Mean Readings by Circumstance</h4>
+                            <Plot
+                                data={[
+                                    ...getRangeTraces(currentVital.key, sortedCircumstances),
+                                    ...['VinCense', 'Dr Trust', 'Dr Odin'].map(dev => {
+                                        const x: string[] = [];
+                                        const y: number[] = [];
 
-                                    sortedCircumstances.forEach(c => {
-                                        const vals = processed[currentVital.key]?.[c]?.[dev] || [];
-                                        if (vals.length > 0) {
-                                            const { mean } = calculateStats(vals);
-                                            x.push(c);
-                                            y.push(mean);
-                                        } else {
-                                            x.push(c);
-                                            y.push(0);
-                                        }
-                                    });
+                                        sortedCircumstances.forEach(c => {
+                                            const vals = processed[currentVital.key]?.[c]?.[dev] || [];
+                                            if (vals.length > 0) {
+                                                const { mean } = calculateStats(vals);
+                                                x.push(c);
+                                                y.push(mean);
+                                            } else {
+                                                x.push(c);
+                                                y.push(0);
+                                            }
+                                        });
 
-                                    return {
-                                        x,
-                                        y,
-                                        name: dev,
-                                        type: 'bar',
-                                        marker: { opacity: 0.8 },
-                                        text: y.map(v => v ? v.toFixed(1) : ''),
-                                        textposition: 'auto',
-                                    };
-                                })]}
-                            layout={{
-                                barmode: 'group',
-                                autosize: true,
-                                paper_bgcolor: 'transparent',
-                                plot_bgcolor: 'transparent',
-                                font: { color: textColor },
-                                margin: { b: 150, l: 60, r: 20, t: 50 }, // Adjusted top margin
-                                xaxis: {
-                                    gridcolor: gridColor,
-                                    title: 'Circumstance',
-                                    tickangle: -45,
-                                    automargin: true
-                                },
-                                yaxis: {
-                                    gridcolor: gridColor,
-                                    title: `Mean ${currentVital.unit}`,
-                                    automargin: true
-                                },
-                                legend: { orientation: 'h', x: 0, y: 1.1 },
-                            } as any}
-                            useResizeHandler={true}
-                            config={{ responsive: true }}
-                            className="w-full h-full"
-                        />
-                    </ExpandableChart>
+                                        return {
+                                            x,
+                                            y,
+                                            name: dev,
+                                            type: 'bar',
+                                            marker: { opacity: 0.8 },
+                                            text: y.map(v => v ? v.toFixed(1) : ''),
+                                            textposition: 'auto',
+                                        };
+                                    })]}
+                                layout={{
+                                    barmode: 'group',
+                                    autosize: true,
+                                    paper_bgcolor: 'transparent',
+                                    plot_bgcolor: 'transparent',
+                                    font: { color: textColor },
+                                    margin: { b: 150, l: 60, r: 20, t: 50 }, // Adjusted top margin
+                                    xaxis: {
+                                        gridcolor: gridColor,
+                                        title: 'Circumstance',
+                                        tickangle: -45,
+                                        automargin: true
+                                    },
+                                    yaxis: {
+                                        gridcolor: gridColor,
+                                        title: `Mean ${currentVital.unit}`,
+                                        automargin: true
+                                    },
+                                    legend: { orientation: 'h', x: 0, y: 1.1 },
+                                } as any}
+                                useResizeHandler={true}
+                                config={{ responsive: true }}
+                                className="w-full h-full"
+                            />
+                        </ExpandableChart>
+                    </div>
                     {/* Insight 1 */}
                     {/* Chart Description */}
                     <div className="col-span-1 lg:col-span-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border-l-4 border-gray-400 mb-2">

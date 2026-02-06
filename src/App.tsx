@@ -62,8 +62,7 @@ function App() {
         const diff = Math.max(0, newTotal - prevCount);
         setSyncStats({ visible: true, newCount: diff });
 
-        // Auto hide after 3 seconds
-        setTimeout(() => setSyncStats(null), 4000);
+
       }
 
     } catch (err) {
@@ -146,6 +145,24 @@ function App() {
     { id: 'DeepDive', label: 'VinCense Accuracy Overview' },
     { id: 'Source', label: 'Data Source' }
   ];
+
+  // Visited Tabs State
+  const [visitedTabs, setVisitedTabs] = useState<Set<string>>(new Set(['Welcome']));
+
+  const handleTabChange = (tabId: string) => {
+    setVisitedTabs(prev => new Set(prev).add(activeTab)); // Add *previous* tab to visited
+    setActiveTab(tabId);
+  };
+
+  // Ensure current tab is marked visited when mounted or changed
+  useEffect(() => {
+    setVisitedTabs(prev => {
+      const next = new Set(prev);
+      next.add(activeTab);
+      return next;
+    });
+  }, [activeTab]);
+
 
   // Landing Page Mode
   if (activeTab === 'Welcome') {
@@ -251,20 +268,28 @@ function App() {
               }}
             >
               <nav className="-mb-px flex flex-nowrap space-x-8 px-4 min-w-full" aria-label="Tabs">
-                {tabs.map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`
+                {tabs.map(tab => {
+                  const isActive = activeTab === tab.id;
+                  const isVisited = visitedTabs.has(tab.id);
+
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => handleTabChange(tab.id)}
+                      className={`
                                     whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 flex-shrink-0
-                                    ${activeTab === tab.id
-                        ? 'hidden' // Hide selected tab
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'}
+                                    ${isActive
+                          ? 'hidden' // Active: Hidden from list
+                          : isVisited
+                            ? 'border-transparent text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:border-gray-300' // Visited: Darker Gray
+                            : 'border-transparent text-gray-400 hover:text-gray-600 dark:text-gray-500 hover:border-gray-300' // Unvisited: Lighter Gray
+                        }
                                 `}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
               </nav>
             </div>
 
