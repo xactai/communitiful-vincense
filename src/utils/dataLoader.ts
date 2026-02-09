@@ -43,8 +43,8 @@ export const fetchAndParseData = async (): Promise<DataDict> => {
 
           // Map Date/Time
           if (newKey === 'Date of Measurement') newKey = 'Date';
-          if (newKey === 'Time of Measurement (24-Hour Format)') newKey = 'Time';
-          if (newKey === 'Circumstance of Measurement' || newKey.includes('Circumstance of Measurement')) newKey = 'Circumstance';
+          if (newKey.includes('Time of Measurement')) newKey = 'Time';
+          if (newKey.includes('Circumstance of Measurement')) newKey = 'Circumstance';
 
           // Map Readings columns (Standardize)
           // VinCense Readings -> same
@@ -168,11 +168,11 @@ export const fetchAndParseData = async (): Promise<DataDict> => {
           newRow['Date'] = combined; // Use the Combined Local Date object for filtering
 
           // Only add DateStr for non-vital sheets (User Request #65)
-          if (!['Pulse', 'SpO2', 'Temp', 'Resp'].includes(canonicalKey)) {
+          if (!['Pulse', 'SpO2', 'Temp', 'Resp', 'Consolidated'].includes(canonicalKey)) {
             newRow['DateStr'] = format(combined, 'yyyy-MM-dd');
           }
         } else {
-          if (!['Pulse', 'SpO2', 'Temp', 'Resp'].includes(canonicalKey)) {
+          if (!['Pulse', 'SpO2', 'Temp', 'Resp', 'Consolidated'].includes(canonicalKey)) {
             newRow['DateStr'] = 'Unknown';
           }
         }
