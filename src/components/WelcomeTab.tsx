@@ -1,7 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../assets/VinCense Logo.png';
-import { motion } from 'framer-motion';
-import { Activity, Heart, Wind, Thermometer, ShieldCheck, BarChart2, MousePointer } from 'lucide-react';
+import img1 from '../assets/1.jpg';
+import img2 from '../assets/2.jpg';
+import img3 from '../assets/3.jpg';
+import img4 from '../assets/4.jpg';
+import img5 from '../assets/5.avif';
+import img6 from '../assets/6.jpg';
+import imgMan from '../assets/man.avif';
+
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    BarChart2,
+    ArrowRight,
+    Map,
+    Info,
+    Quote,
+    Heart,
+    Activity,
+    Wind,
+    Thermometer,
+    X,
+    Users,
+    Zap
+} from 'lucide-react';
 
 interface WelcomeTabProps {
     onStart: () => void;
@@ -9,142 +30,461 @@ interface WelcomeTabProps {
 }
 
 export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) => {
-    const textColor = isDarkMode ? 'text-gray-200' : 'text-gray-800';
+    // --- Theme Colors ---
+    const textColor = isDarkMode ? 'text-gray-100' : 'text-gray-900';
     const subTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
-    const cardBg = isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100';
+    const cardBg = isDarkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/90 border-gray-200';
+    const overlayBg = isDarkMode ? 'bg-gray-900/60' : 'bg-white/60';
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.2
-            }
+    // --- Knowledge Cards Data ---
+    const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+    const knowledgeCards = [
+        {
+            id: 1,
+            title: "What is this Dashboard about?",
+            teaser: "Turning raw vitals into meaningful insights.",
+            icon: BarChart2,
+            content: (
+                <div className="space-y-4">
+                    <p>
+                        This Dashboard brings together insights derived from real-world physiological data collected from multiple subjects using three different devices — <strong>VinCense, Dr Trust, and Dr Odin</strong>.
+                        It presents a unified analytical view of key vitals across varied dimensions such as age groups, gender, real-life circumstances, and inter-device deviations.
+                    </p>
+                    <p>
+                        By transforming raw vitals into meaningful visual analytics, the Dashboard helps uncover patterns, comparisons, and trends that would otherwise remain hidden.
+                    </p>
+                </div>
+            )
+        },
+        {
+            id: 2,
+            title: 'Why "Communitiful × VinCense" ?',
+            teaser: "Where emotional engagement meets physiological data.",
+            icon: Users,
+            content: (
+                <div className="space-y-4">
+                    <p>
+                        <strong>Communitiful</strong> focuses on supporting hospital companions by keeping them engaged and emotionally connected through a shared group chat experience across the hospital ecosystem.
+                        <strong>VinCense</strong> complements this by continuously capturing four core vitals and applying a custom-built stress detection algorithm.
+                    </p>
+                    <p>
+                        Together, this collaboration aims to understand how emotional engagement and social connection influence stress levels in hospital companions, using objective physiological data as evidence.
+                    </p>
+                </div>
+            )
+        },
+        {
+            id: 3,
+            title: "How Subjects Made This Study Possible?",
+            teaser: "Real people. Real scenarios. Real impact.",
+            icon: Zap,
+            content: (
+                <div className="space-y-4">
+                    <p>
+                        The contribution of our <strong>Subjects</strong> lies at the heart of this study.
+                        By participating across different age groups, genders, environments, and real-life scenarios, Subjects enabled the study to expand in both scale and diversity.
+                    </p>
+                    <p>This wide participation allowed us to:</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>Strengthen the reliability of the analysis</li>
+                        <li>Compare readings across devices and demographics</li>
+                        <li>Observe stress patterns across varying circumstances</li>
+                        <li>Build deeper, data-driven insights</li>
+                    </ul>
+                    <p className="italic pt-2 border-t border-gray-200 dark:border-gray-700">
+                        Every reading, interaction, and moment contributed to making the analytics richer, more inclusive, and more meaningful.
+                    </p>
+                </div>
+            )
         }
-    };
+    ];
 
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: { y: 0, opacity: 1 }
-    };
+    // --- Carousel State ---
+    const [carouselIndex, setCarouselIndex] = useState(0);
+    const carouselItems = [
+        { id: 1, title: "Community Driven", desc: "Engaging subjects for better health outcomes.", img: img1 },
+        { id: 2, title: "Advanced Monitoring", desc: "Real-time vitals tracking and analysis.", img: img2 },
+        { id: 3, title: "Data Insights", desc: "Comprehensive analytics for research.", img: img3 },
+        { id: 4, title: "Remote Care", desc: "Seamless patient monitoring anywhere.", img: img4 },
+        { id: 5, title: "Precision Health", desc: "Accurate medical grade data.", img: img5 },
+        { id: 6, title: "Future of Digital Health", desc: "Innovating wellness solutions.", img: img6 },
+    ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCarouselIndex((prev) => (prev + 1) % carouselItems.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
+    // --- Testimonials Data ---
+    const testimonials = [
+        { name: "Dr. A. Sharma", text: "The accuracy of VinCense against standard devices is impressive. A vital tool for remote monitoring." },
+        { name: "Sarah J.", text: "Easy to use and comfortable. Participating in this study has been a seamless experience." },
+        { name: "Research Team", text: "The data granularity provided by this dashboard accelerates our validation process significantly." },
+        { name: "Clinic Staff", text: "Real-time vitals tracking helps us prioritize patient care effectively." },
+    ];
 
     return (
-        <div className="min-h-screen w-full bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark overflow-auto transition-colors duration-300">
-            <div className="absolute top-4 right-4">
-                {/* Optional: Theme Toggle could be here or just inherit/hidden. User said 'Clean'. Let's keep it simple or minimal. */}
-            </div>
+        <div className="min-h-screen w-full bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark overflow-x-hidden overflow-y-auto font-sans selection:bg-indigo-100 dark:selection:bg-indigo-900 relative">
 
-            <motion.div
-                className="max-w-5xl mx-auto py-12 px-4 space-y-12"
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-            >
-                {/* 1. Identity & Overview */}
-                <motion.div className="text-center space-y-6" variants={itemVariants}>
-                    <div className="inline-block mb-4">
-                        <img src={logo} alt="VinCense Logo" className="h-32 w-auto mx-auto" />
-                    </div>
-                    <h1 className={`text-4xl md:text-5xl font-extrabold ${textColor} tracking-tight`}>
-                        VinCense <span className="text-indigo-600 dark:text-indigo-400">Vitals Dashboard</span>
-                    </h1>
-                    <p className={`text-xl md:text-2xl ${subTextColor} max-w-3xl mx-auto leading-relaxed`}>
-                        Advanced medical vitals analysis and cross-device validation platform.
-                    </p>
-                    <p className={`${subTextColor} max-w-2xl mx-auto`}>
-                        This dashboard provides a comprehensive analysis of physiological data spread across multiple demographics and conditions.
-                        It strictly utilizes recorded Excel data to validate the accuracy and consistency of VinCense against medical-grade reference devices.
-                    </p>
-                </motion.div>
+            {/* 1. Logo Section */}
+            <header className="pt-12 pb-6 flex justify-center">
+                <motion.img
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    src={logo}
+                    alt="VinCense Logo"
+                    className="h-24 md:h-32 w-auto object-contain drop-shadow-sm"
+                />
+            </header>
 
-                {/* 3. Vitals Snapshot */}
-                <motion.div variants={itemVariants}>
-                    <h3 className={`text-lg font-bold uppercase tracking-wider ${subTextColor} mb-6 text-center`}>Core Vitals Analyzed</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { icon: Heart, label: 'Pulse Rate', desc: 'Heart beats per minute (BPM)', color: 'text-rose-500' },
-                            { icon: Activity, label: 'SpO₂', desc: 'Blood oxygen saturation (%)', color: 'text-cyan-500' },
-                            { icon: Wind, label: 'Respiratory Rate', desc: 'Breaths per minute', color: 'text-emerald-500' },
-                            { icon: Thermometer, label: 'Skin Temperature', desc: 'Surface body comparison (°C)', color: 'text-amber-500' }
-                        ].map((vital, i) => (
-                            <div key={i} className={`${cardBg} border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center group`}>
-                                <div className={`p-3 rounded-full bg-gray-50 dark:bg-gray-700 mb-4 group-hover:scale-110 transition-transform`}>
-                                    <vital.icon className={`w-8 h-8 ${vital.color}`} />
-                                </div>
-                                <h4 className={`text-lg font-bold ${textColor} mb-2`}>{vital.label}</h4>
-                                <p className={`text-sm ${subTextColor}`}>{vital.desc}</p>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
+            {/* 2. Title Animation */}
+            <section className="text-center px-4 mb-16 overflow-hidden">
+                <h1 className={`text-4xl md:text-6xl font-extrabold tracking-tight ${textColor} flex flex-wrap justify-center gap-x-4 gap-y-2`}>
+                    {["Communitiful", "x", "VinCense"].map((word, i) => (
+                        <motion.span
+                            key={i}
+                            initial={{
+                                opacity: 0,
+                                x: i === 0 ? -100 : i === 2 ? 100 : 0,
+                                y: i === 1 ? -50 : 0
+                            }}
+                            animate={{ opacity: 1, x: 0, y: 0 }}
+                            transition={{
+                                duration: 1,
+                                delay: 0.5 + (i * 0.2),
+                                type: "spring",
+                                stiffness: 100
+                            }}
+                            className={i === 1 ? "text-indigo-500 font-light" : ""}
+                        >
+                            {word}
+                        </motion.span>
+                    ))}
+                </h1>
+            </section>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* 4. Device Comparison Context */}
-                    <motion.div variants={itemVariants} className={`${cardBg} border p-8 rounded-2xl shadow-sm`}>
-                        <div className="flex items-start gap-4 mb-4">
-                            <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                                <BarChart2 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                            </div>
-                            <div>
-                                <h3 className={`text-xl font-bold ${textColor} mb-2`}>Device Comparison Logic</h3>
-                                <p className={`${subTextColor} leading-relaxed`}>
-                                    The core function of this platform is to benchmark the <strong>VinCense</strong> wearable against established market references.
-                                    We analyze agreement, identifying deviations, bias, and stability across various subjects and activities to ensure data integrity.
-                                </p>
-                            </div>
-                        </div>
-                    </motion.div>
+            {/* 3. Knowledge Cards (Progressive Reveal) */}
+            <section className="max-w-6xl mx-auto px-6 mb-24 relative z-20">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {knowledgeCards.map((card) => (
+                        <motion.div
+                            layoutId={`card-${card.id}`}
+                            key={card.id}
+                            onClick={() => setSelectedCardId(card.id)}
+                            className={`cursor-pointer group relative p-6 rounded-2xl ${cardBg} shadow-sm hover:shadow-xl transition-shadow border overflow-hidden`}
+                            whileHover={{ y: -5 }}
+                        >
+                            <motion.div
+                                layoutId={`icon-${card.id}`}
+                                className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center mb-4 text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform"
+                            >
+                                <card.icon className="w-5 h-5" />
+                            </motion.div>
+                            <motion.h3
+                                layoutId={`title-${card.id}`}
+                                className={`text-lg font-bold ${textColor} mb-2 leading-tight`}
+                            >
+                                {card.title}
+                            </motion.h3>
+                            <motion.p
+                                layoutId={`teaser-${card.id}`}
+                                className={`text-sm ${subTextColor}`}
+                            >
+                                {card.teaser}
+                            </motion.p>
 
-                    {/* 6. Medical Credibility */}
-                    <motion.div variants={itemVariants} className={`${cardBg} border p-8 rounded-2xl shadow-sm`}>
-                        <div className="flex items-start gap-4 mb-4">
-                            <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                                <ShieldCheck className="w-6 h-6 text-green-600 dark:text-green-400" />
-                            </div>
-                            <div>
-                                <h3 className={`text-xl font-bold ${textColor} mb-2`}>Data Integrity Assurance</h3>
-                                <p className={`${subTextColor} leading-relaxed`}>
-                                    Analytics are generated <strong>strictly</strong> from the provided dataset. We use medically accepted baseline ranges for abnormality detection.
-                                    <br /><span className="italic text-xs mt-2 block opacity-80">Note: No synthetic data generation or interpolation is performed.</span>
-                                </p>
-                            </div>
-                        </div>
-                    </motion.div>
+                            {/* Ripple Effect hint on hover */}
+                            <div className="absolute inset-0 bg-indigo-50/0 group-hover:bg-indigo-50/5 dark:group-hover:bg-indigo-900/10 transition-colors duration-300 pointer-events-none" />
+                        </motion.div>
+                    ))}
                 </div>
 
-                {/* 5. How to Use */}
-                <motion.div variants={itemVariants} className={`${cardBg} border p-8 rounded-2xl shadow-sm bg-gradient-to-br from-indigo-50 to-white dark:from-gray-800 dark:to-gray-900`}>
-                    <h3 className={`text-lg font-bold uppercase tracking-wider ${subTextColor} mb-6 text-center`}>How to Navigate</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {[
-                            { step: '1', title: 'Select Context', text: 'Use the sidebar to filter by Subject, Date, or specific Date Ranges.' },
-                            { step: '2', title: 'Explore Tabs', text: 'Navigate vertically through Demographics (Gender, Age) and Conditions (Circumstance).' },
-                            { step: '3', title: 'Analyze Trends', text: 'Dive into deep comparisons and error analytics to validate device performance.' }
-                        ].map((step, i) => (
-                            <div key={i} className="flex flex-col items-center text-center">
-                                <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-lg mb-4 shadow-lg shadow-indigo-500/30">
-                                    {step.step}
-                                </div>
-                                <h4 className={`font-bold ${textColor} mb-2`}>{step.title}</h4>
-                                <p className={`text-sm ${subTextColor}`}>{step.text}</p>
+                {/* Expanded Card Overlay */}
+                <AnimatePresence>
+                    {selectedCardId && (
+                        <>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                onClick={() => setSelectedCardId(null)}
+                                className={`fixed inset-0 z-40 backdrop-blur-sm ${overlayBg}`}
+                            />
+                            <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none p-4">
+                                {knowledgeCards.map((card) => {
+                                    if (card.id !== selectedCardId) return null;
+                                    return (
+                                        <motion.div
+                                            layoutId={`card-${card.id}`}
+                                            key={card.id}
+                                            className={`pointer-events-auto w-full max-w-2xl ${cardBg} rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh]`}
+                                        >
+                                            <div className="p-8 flex-1 overflow-y-auto">
+                                                <div className="flex justify-between items-start mb-6">
+                                                    <div className="flex items-center gap-4">
+                                                        <motion.div
+                                                            layoutId={`icon-${card.id}`}
+                                                            className="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center text-indigo-600 dark:text-indigo-400"
+                                                        >
+                                                            <card.icon className="w-6 h-6" />
+                                                        </motion.div>
+                                                        <div>
+                                                            <motion.h3
+                                                                layoutId={`title-${card.id}`}
+                                                                className={`text-2xl font-bold ${textColor}`}
+                                                            >
+                                                                {card.title}
+                                                            </motion.h3>
+                                                            <motion.p
+                                                                layoutId={`teaser-${card.id}`}
+                                                                className={`text-base ${subTextColor} mt-1`}
+                                                            >
+                                                                {card.teaser}
+                                                            </motion.p>
+                                                        </div>
+                                                    </div>
+                                                    <button
+                                                        onClick={(e) => { e.stopPropagation(); setSelectedCardId(null); }}
+                                                        className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                                    >
+                                                        <X className={`w-6 h-6 ${subTextColor}`} />
+                                                    </button>
+                                                </div>
+
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 20 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    transition={{ delay: 0.2, duration: 0.4 }}
+                                                    className={`prose dark:prose-invert max-w-none ${textColor} text-lg leading-relaxed`}
+                                                >
+                                                    {card.content}
+                                                </motion.div>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
                             </div>
-                        ))}
+                        </>
+                    )}
+                </AnimatePresence>
+            </section>
+
+            {/* 4. Image Carousel (Auto-Scrolling) */}
+            <section className="mb-20 overflow-hidden relative w-full py-10">
+                <div className="flex justify-center items-center h-[500px] md:h-[600px] relative max-w-6xl mx-auto perspective-1000">
+                    <AnimatePresence mode='popLayout'>
+                        {carouselItems.map((item, index) => {
+                            // Calculate position relative to current index
+                            let position = (index - carouselIndex);
+                            // Normalize to [-length/2, length/2] roughly
+                            if (position < -2) position += carouselItems.length;
+                            if (position > 3) position -= carouselItems.length;
+
+                            // Determine styles based on position
+                            const isCenter = position === 0;
+
+                            // Only render if visible (center +/- 2 usually enough)
+                            if (Math.abs(position) > 2) return null;
+
+                            return (
+                                <motion.div
+                                    key={item.id}
+                                    className={`absolute rounded-2xl shadow-xl overflow-hidden cursor-pointer bg-gray-900 border-4 ${isCenter ? 'border-indigo-500' : 'border-transparent'}`}
+                                    initial={{ scale: 0.8, opacity: 0 }}
+                                    animate={{
+                                        x: isCenter ? "0%" : position * 70 + "%",
+                                        scale: isCenter ? 2.0 : 1 - Math.abs(position) * 0.15,
+                                        zIndex: 10 - Math.abs(position),
+                                        opacity: isCenter ? 1 : 0.6 - Math.abs(position) * 0.1,
+                                        filter: isCenter ? "blur(0px)" : "blur(2px)",
+                                        rotateY: isCenter ? 0 : position * -15
+                                    }}
+                                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                                    style={{
+                                        width: "300px",
+                                        height: "200px",
+                                        left: "50%",
+                                        marginLeft: "-150px", // Center the card
+                                    }}
+                                    onClick={() => setCarouselIndex(index)}
+                                >
+                                    <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
+                                    {isCenter && (
+                                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4 text-white">
+                                            <h3 className="font-bold text-lg">{item.title}</h3>
+                                        </div>
+                                    )}
+                                </motion.div>
+                            );
+                        })}
+                    </AnimatePresence>
+                </div>
+            </section>
+
+            {/* 5. Core Vitals Captured Section */}
+            <section className="max-w-md mx-auto px-6 mb-20">
+                <h3 className={`text-center text-xl font-bold mb-6 ${textColor}`}>Core Vitals Captured</h3>
+                <div className="grid grid-cols-2 gap-2">
+                    {[
+                        {
+                            icon: Heart,
+                            label: 'Pulse Rate',
+                            desc: 'Monitoring heart beats per minute.',
+                            color: 'text-rose-500',
+                            bg: 'bg-rose-100/50 dark:bg-rose-900/20',
+                            rounded: 'rounded-tl-[60px]'
+                        },
+                        {
+                            icon: Activity,
+                            label: 'SpO₂',
+                            desc: 'Measuring blood oxygen saturation levels.',
+                            color: 'text-cyan-500',
+                            bg: 'bg-cyan-100/50 dark:bg-cyan-900/20',
+                            rounded: 'rounded-tr-[60px]'
+                        },
+                        {
+                            icon: Wind,
+                            label: 'Respiratory Rate',
+                            desc: 'Tracking breaths per minute.',
+                            color: 'text-emerald-500',
+                            bg: 'bg-emerald-100/50 dark:bg-emerald-900/20',
+                            rounded: 'rounded-bl-[60px]'
+                        },
+                        {
+                            icon: Thermometer,
+                            label: 'Skin Temperature',
+                            desc: 'Sensing surface body temperature.',
+                            color: 'text-amber-500',
+                            bg: 'bg-amber-100/50 dark:bg-amber-900/20',
+                            rounded: 'rounded-br-[60px]'
+                        }
+                    ].map((vital, i) => (
+                        <motion.div
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.1 }}
+                            className={`${cardBg} ${vital.bg} ${vital.rounded} p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 aspect-square group`}
+                        >
+                            <div className={`p-2 rounded-full bg-white dark:bg-gray-800 mb-2 shadow-sm group-hover:scale-110 transition-transform`}>
+                                <vital.icon className={`w-5 h-5 ${vital.color}`} />
+                            </div>
+                            <h4 className={`text-base font-bold ${textColor} mb-0.5`}>{vital.label}</h4>
+                            <p className={`text-[10px] ${subTextColor} max-w-[120px]`}>{vital.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
+            {/* 6. Testimonials Section (Looping Marquee) */}
+            <section className="mb-20 overflow-hidden bg-gradient-to-r from-transparent via-indigo-50/50 dark:via-indigo-900/20 to-transparent py-12">
+                <div className="max-w-7xl mx-auto px-4">
+                    <h3 className={`text-center text-xl font-semibold mb-8 ${subTextColor} uppercase tracking-widest`}>What People Say</h3>
+                    <div className="relative flex overflow-x-hidden group">
+                        <motion.div
+                            className="flex gap-8 whitespace-nowrap"
+                            animate={{ x: [0, -1000] }}
+                            transition={{
+                                repeat: Infinity,
+                                ease: "linear",
+                                duration: 25 // Adjust speed
+                            }}
+                        >
+                            {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                                <div
+                                    key={i}
+                                    className={`inline-block w-[350px] p-6 rounded-2xl ${cardBg} border shadow-sm flex-shrink-0 whitespace-normal`}
+                                >
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-indigo-100 dark:border-indigo-900">
+                                            <img src={imgMan} alt="User Avatar" className="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <p className={`font-bold ${textColor}`}>{t.name}</p>
+                                            <div className="flex text-yellow-400 text-xs">★★★★★</div>
+                                        </div>
+                                    </div>
+                                    <p className={`text-sm italic ${subTextColor} flex gap-2`}>
+                                        <Quote className="w-4 h-4 opacity-30 flex-shrink-0" />
+                                        {t.text}
+                                    </p>
+                                </div>
+                            ))}
+                        </motion.div>
                     </div>
-                </motion.div>
+                </div>
+            </section>
 
-                {/* 7. Call to Action */}
-                <motion.div variants={itemVariants} className="flex justify-center pt-8">
-                    <button
-                        onClick={onStart}
-                        className="group relative px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg rounded-full shadow-xl shadow-indigo-600/30 transition-all hover:scale-105 active:scale-95 flex items-center gap-3"
-                    >
-                        Start Navigating Dashboard
-                        <MousePointer className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                </motion.div>
+            {/* 7. How to Navigate Section */}
+            <section className="max-w-5xl mx-auto px-6 mb-20">
+                <div className="text-center mb-12">
+                    <h2 className={`text-3xl font-bold ${textColor}`}>How to Navigate</h2>
+                    <p className={`mt-2 ${subTextColor}`}>Your journey through the data in 3 simple steps.</p>
+                </div>
 
-            </motion.div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+                    {/* Connecting Line (Desktop) */}
+                    <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-gray-200 dark:bg-gray-700 -z-10"></div>
+
+                    {[
+                        {
+                            step: 1,
+                            title: "Select Scope",
+                            desc: "Filter by Subject or Date Range in the Sidebar.",
+                            icon: Map
+                        },
+                        {
+                            step: 2,
+                            title: "Choose Analytics",
+                            desc: "Switch between tabs for Demographics, Vitals, or Error Analysis.",
+                            icon: BarChart2
+                        },
+                        {
+                            step: 3,
+                            title: "Deep Dive",
+                            desc: "View detailed charts and export findings.",
+                            icon: Info
+                        }
+                    ].map((item) => (
+                        <motion.div
+                            key={item.step}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: item.step * 0.2 }}
+                            className={`${cardBg} p-8 rounded-3xl border shadow-sm flex flex-col items-center text-center group hover:-translate-y-2 transition-transform duration-300`}
+                        >
+                            <div className="w-16 h-16 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold mb-6 shadow-lg shadow-indigo-600/20 group-hover:scale-110 transition-transform">
+                                <item.icon className="w-8 h-8" />
+                            </div>
+                            <h3 className={`text-xl font-bold ${textColor} mb-3`}>{item.title}</h3>
+                            <p className={`${subTextColor}`}>{item.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </section>
+
+            {/* 8. Call to Action */}
+            <section className="pb-24 flex justify-center px-4">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={onStart}
+                    className="group relative inline-flex items-center gap-3 px-10 py-5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xl rounded-full shadow-2xl shadow-indigo-600/40 transition-all overflow-hidden"
+                >
+                    <span className="relative z-10">Start Exploring</span>
+                    <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-1 transition-transform" />
+
+                    {/* Hover Effect Shine */}
+                    <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
+                </motion.button>
+            </section>
+
         </div>
     );
 };
