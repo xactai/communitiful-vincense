@@ -1,13 +1,14 @@
 name: Periodic E2E Monitoring
 
 on:
+  push:
+    branches:
+      - main
 
-#   branches:
-#    - main
-#schedule:
-#- cron: '30 0,6,12,18 * * *'
-# workflow_dispatch:
-# Allows manual triggering of the workflow
+  schedule:
+    - cron: '30 0,6,12,18 * * *'  # Runs at 00:30, 06:30, 12:30, 18:30 UTC
+
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   test:
