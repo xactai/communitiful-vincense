@@ -14,8 +14,10 @@ import { CircumstanceAnalyticsTab } from './components/CircumstanceAnalyticsTab'
 import { TrustOdinComparisonTab } from './components/TrustOdinComparisonTab';
 import { WelcomeTab } from './components/WelcomeTab';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck, User, HelpCircle } from 'lucide-react';
 import { ScrollToTop } from './components/ScrollToTop';
+import { HealthProfileModal } from './components/HealthProfileModal';
+import { FAQPanel } from './components/FAQPanel';
 
 import type { DateRange } from 'react-day-picker';
 
@@ -24,6 +26,8 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>('');
+  const [showHealthProfile, setShowHealthProfile] = useState<boolean>(false);
+  const [showFAQ, setShowFAQ] = useState<boolean>(false);
   const mainRef = useRef<HTMLDivElement>(null);
 
   // Date State: Range or Single (from react-day-picker)
@@ -242,16 +246,39 @@ function App() {
               <h1 className="text-3xl font-bold text-blue-900 dark:text-blue-400">
                 {tabs.find(t => t.id === activeTab)?.label || 'Dashboard'}
               </h1>
-              <div className="text-left md:text-right text-sm bg-white dark:bg-card-bg-dark p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-                <div><span className="font-bold text-gray-500 dark:text-gray-400">Subject:</span> {selectedSubject}</div>
-                <div>
-                  <span className="font-bold text-gray-500 dark:text-gray-400">Date:</span>{' '}
-                  {selectedDateRange?.from ? (
-                    <>
-                      {format(selectedDateRange.from, 'dd-MM-yyyy')}
-                      {selectedDateRange.to ? ` - ${format(selectedDateRange.to, 'dd-MM-yyyy')}` : ''}
-                    </>
-                  ) : <span className="italic">All Dates</span>}
+
+              <div className="flex items-center gap-4">
+                {/* FAQ Button */}
+                <button
+                  onClick={() => setShowFAQ(true)}
+                  className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-card-bg-dark rounded-full shadow-sm border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-800 transition-colors group"
+                  title="Help & FAQ"
+                >
+                  <HelpCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold text-sm hidden md:inline">FAQ</span>
+                </button>
+
+                {/* Health Profile Button */}
+                <button
+                  onClick={() => setShowHealthProfile(true)}
+                  className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-card-bg-dark rounded-full shadow-sm border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-800 transition-colors group"
+                  title="View Health Profile"
+                >
+                  <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <span className="font-semibold text-sm hidden md:inline">Your Health Profile</span>
+                </button>
+
+                <div className="text-left md:text-right text-sm bg-white dark:bg-card-bg-dark p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                  <div><span className="font-bold text-gray-500 dark:text-gray-400">Subject:</span> {selectedSubject}</div>
+                  <div>
+                    <span className="font-bold text-gray-500 dark:text-gray-400">Date:</span>{' '}
+                    {selectedDateRange?.from ? (
+                      <>
+                        {format(selectedDateRange.from, 'dd-MM-yyyy')}
+                        {selectedDateRange.to ? ` - ${format(selectedDateRange.to, 'dd-MM-yyyy')}` : ''}
+                      </>
+                    ) : <span className="italic">All Dates</span>}
+                  </div>
                 </div>
               </div>
             </div>
@@ -313,6 +340,19 @@ function App() {
                 {activeTab === 'Source' && <SourceTab data={data} isDarkMode={isDarkMode} />}
               </motion.div>
             </AnimatePresence>
+
+            {/* FAQ Panel Component - NEW */}
+            <FAQPanel
+              isOpen={showFAQ}
+              onClose={() => setShowFAQ(false)}
+            />
+            <HealthProfileModal
+              isOpen={showHealthProfile}
+              onClose={() => setShowHealthProfile(false)}
+              data={data}
+              initialSubject={selectedSubject}
+              allSubjects={subjects.filter(s => s !== 'All Subjects')}
+            />
           </div>
         )}
         <ScrollToTop scrollContainerRef={mainRef} />

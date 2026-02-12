@@ -326,14 +326,14 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
             </section>
 
             {/* 5. Core Vitals Captured Section */}
-            <section className="max-w-md mx-auto px-6 mb-20">
+            <section className="max-w-7xl mx-auto px-6 mb-20">
                 <h3 className={`text-center text-xl font-bold mb-6 ${textColor}`}>Core Vitals Captured</h3>
                 <div className="grid grid-cols-2 gap-2">
                     {[
                         {
                             icon: Heart,
                             label: 'Pulse Rate',
-                            desc: 'Monitoring heart beats per minute.',
+                            desc: 'Heart rate is the number of times your heart beats per minute and naturally changes with rest, activity, and stress. For most adults, a normal resting heart rate ranges from 60 to 100 bpm. It increases during exercise and lowers when you\'re relaxed or asleep. Monitoring your heart rate regularly can give you valuable insights into your fitness, recovery, and overall heart health.',
                             color: 'text-rose-500',
                             bg: 'bg-rose-100/50 dark:bg-rose-900/20',
                             rounded: 'rounded-tl-[60px]'
@@ -341,7 +341,7 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                         {
                             icon: Activity,
                             label: 'SpO₂',
-                            desc: 'Measuring blood oxygen saturation levels.',
+                            desc: 'SpO₂, or oxygen saturation, measures the percentage of hemoglobin in your blood that is carrying oxygen. It\'s a key indicator of how well your body is delivering oxygen to its cells. Normal SpO₂ levels for healthy individuals typically range from 95% to 100%. Readings below 95% may suggest low blood oxygen, with levels under 90% considered severe.',
                             color: 'text-cyan-500',
                             bg: 'bg-cyan-100/50 dark:bg-cyan-900/20',
                             rounded: 'rounded-tr-[60px]'
@@ -349,7 +349,7 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                         {
                             icon: Wind,
                             label: 'Respiratory Rate',
-                            desc: 'Tracking breaths per minute.',
+                            desc: 'Respiratory rate measures the number of breaths you take per minute and is an important indicator of how your body responds to physical and emotional demands. For healthy adults at rest, a normal respiratory rate typically ranges from 12 to 20 breaths per minute. Changes in breathing patterns can reflect activity levels, stress, fatigue, or potential respiratory concerns.',
                             color: 'text-emerald-500',
                             bg: 'bg-emerald-100/50 dark:bg-emerald-900/20',
                             rounded: 'rounded-bl-[60px]'
@@ -357,7 +357,7 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                         {
                             icon: Thermometer,
                             label: 'Skin Temperature',
-                            desc: 'Sensing surface body temperature.',
+                            desc: 'Skin temperature reflects the temperature at the surface of your body and can vary based on environment, activity level, blood flow, and stress. Unlike core body temperature, skin temperature naturally fluctuates throughout the day and between individuals. Sudden drops or rises in skin temperature may indicate changes in circulation, stress response, or environmental exposure.',
                             color: 'text-amber-500',
                             bg: 'bg-amber-100/50 dark:bg-amber-900/20',
                             rounded: 'rounded-br-[60px]'
@@ -369,13 +369,13 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className={`${cardBg} ${vital.bg} ${vital.rounded} p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 aspect-square group`}
+                            className={`${cardBg} ${vital.bg} ${vital.rounded} p-8 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 h-full group`}
                         >
-                            <div className={`p-2 rounded-full bg-white dark:bg-gray-800 mb-2 shadow-sm group-hover:scale-110 transition-transform`}>
-                                <vital.icon className={`w-5 h-5 ${vital.color}`} />
+                            <div className={`p-3 rounded-full bg-white dark:bg-gray-800 mb-4 shadow-sm group-hover:scale-110 transition-transform`}>
+                                <vital.icon className={`w-6 h-6 ${vital.color}`} />
                             </div>
-                            <h4 className={`text-base font-bold ${textColor} mb-0.5`}>{vital.label}</h4>
-                            <p className={`text-[10px] ${subTextColor} max-w-[120px]`}>{vital.desc}</p>
+                            <h4 className={`text-lg font-bold ${textColor} mb-2`}>{vital.label}</h4>
+                            <p className={`text-sm ${subTextColor} leading-relaxed`}>{vital.desc}</p>
                         </motion.div>
                     ))}
                 </div>
