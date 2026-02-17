@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/VinCense Logo.png';
 import butterflyLogo from '../assets/butterfly.png';
-import { RefreshCw, Moon, Sun, Menu, X, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RefreshCw, Menu, X, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight, HelpCircle, User, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
 import type { DateRange } from 'react-day-picker';
@@ -17,8 +17,9 @@ interface SidebarProps {
   onDateRangeChange: (range: DateRange | undefined) => void;
   onRefresh: () => void;
   isDarkMode: boolean;
-  toggleTheme: () => void;
-
+  onShowFAQ: () => void;
+  onShowHealthProfile: () => void;
+  onShowVideoGallery: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,8 +31,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onDateRangeChange,
   onRefresh,
   isDarkMode,
-  toggleTheme,
-
+  onShowFAQ,
+  onShowHealthProfile,
+  onShowVideoGallery,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -92,25 +94,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {!isCollapsed ? (
           <>
-            {/* Theme Toggle */}
-            <div className="flex items-center justify-between mb-8 p-3 bg-gray-50 dark:bg-black/20 rounded-xl border border-gray-100 dark:border-gray-800 backdrop-blur-sm">
-              <span className="text-sm font-medium text-text-light dark:text-text-dark flex items-center gap-2">
-                {isDarkMode ? <Moon size={16} /> : <Sun size={16} />}
-                {isDarkMode ? 'Dark Mode' : 'Light Mode'}
-              </span>
-              <button
-                onClick={toggleTheme}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDarkMode ? 'bg-indigo-600' : 'bg-gray-300'
-                  }`}
-              >
-                <motion.span
-                  layout
-                  className="inline-block h-4 w-4 transform rounded-full bg-white shadow-md"
-                  animate={{ x: isDarkMode ? 22 : 2 }}
-                />
-              </button>
-            </div>
-
             <div className="space-y-6 flex-grow">
               {/* Subject Select */}
               <div className="group">
@@ -201,8 +184,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Reference Ranges */}
 
 
-            {/* Sync Data */}
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 pb-4">
+            {/* Sync Data & Other Actions */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 pb-4 space-y-3">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -212,16 +195,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <RefreshCw size={18} className="animate-spin-slow" />
                 Sync Vitals Log
               </motion.button>
+
+              <button
+                onClick={onShowHealthProfile}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <User size={18} />
+                Your Health Profile
+              </button>
+
+              <button
+                onClick={onShowVideoGallery}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <Video size={18} />
+                Video Gallery
+              </button>
+
+              <button
+                onClick={onShowFAQ}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <HelpCircle size={18} />
+                FAQ
+              </button>
             </div>
           </>
         ) : (
           /* Collapsed View */
           <div className="flex flex-col items-center gap-6 mt-4">
-            <button onClick={toggleTheme} className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700">
-              {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
-            </button>
-            <button onClick={onRefresh} className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200">
+            <button onClick={onRefresh} className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200" title="Sync Vitals Log">
               <RefreshCw size={20} />
+            </button>
+            <button onClick={onShowFAQ} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="FAQ">
+              <HelpCircle size={20} />
+            </button>
+            <button onClick={onShowHealthProfile} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="Your Health Profile">
+              <User size={20} />
+            </button>
+            <button onClick={onShowVideoGallery} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="Video Gallery">
+              <Video size={20} />
             </button>
           </div>
         )}
@@ -256,7 +269,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         initial={false}
         animate={{
           x: isMobile ? (isOpen ? 0 : -320) : 0,
-          width: isMobile ? 320 : (isCollapsed ? 80 : 370)
+          width: isMobile
+            ? 320
+            : (isCollapsed
+              ? 80
+              : (showDatePicker ? 370 : 250)) // 250px default, 370px when calendar open
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         style={{ position: isMobile ? 'fixed' : 'relative', transform: 'none' }}

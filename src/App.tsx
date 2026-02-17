@@ -13,10 +13,11 @@ import { AgeGroupAnalyticsTab } from './components/AgeGroupAnalyticsTab';
 import { CircumstanceAnalyticsTab } from './components/CircumstanceAnalyticsTab';
 import { TrustOdinComparisonTab } from './components/TrustOdinComparisonTab';
 import { WelcomeTab } from './components/WelcomeTab';
+import { VideoGalleryTab } from './components/VideoGalleryTab';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, User, HelpCircle } from 'lucide-react';
+import { ShieldCheck, Moon, Sun, Home } from 'lucide-react';
 import { ScrollToTop } from './components/ScrollToTop';
-import { HealthProfileModal } from './components/HealthProfileModal';
+import { HealthProfileTab } from './components/HealthProfileTab';
 import { FAQPanel } from './components/FAQPanel';
 
 import type { DateRange } from 'react-day-picker';
@@ -26,7 +27,6 @@ function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>('');
-  const [showHealthProfile, setShowHealthProfile] = useState<boolean>(false);
   const [showFAQ, setShowFAQ] = useState<boolean>(false);
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -139,7 +139,7 @@ function App() {
   }, [data, selectedDateRange]);
 
   const tabs = [
-    { id: 'Home', label: 'Home' },
+    // Home tab removed from navigation list
     { id: 'Gender', label: 'Gender Analytics' },
     { id: 'AgeGroup', label: 'Age Group Analytics' },
     { id: 'Circumstance', label: 'Circumstance Analytics' },
@@ -147,6 +147,7 @@ function App() {
     { id: 'Deviation', label: 'Error & Deviation Analytics' },
     { id: 'TrustOdin', label: 'Dr Trust v/s Dr Odin' },
     { id: 'DeepDive', label: 'VinCense Accuracy Overview' },
+    { id: 'HealthProfile', label: 'Health Profile' },
     { id: 'Source', label: 'Data Source' }
   ];
 
@@ -184,7 +185,10 @@ function App() {
         onDateRangeChange={setSelectedDateRange}
         onRefresh={() => loadData(true)}
         isDarkMode={isDarkMode}
-        toggleTheme={() => setIsDarkMode(!isDarkMode)}
+
+        onShowFAQ={() => setShowFAQ(true)}
+        onShowHealthProfile={() => setActiveTab('HealthProfile')}
+        onShowVideoGallery={() => setActiveTab('VideoGallery')}
       />
 
       <main ref={mainRef} className="flex-1 overflow-auto p-4 md:p-8 pt-16 md:pt-8 relative transition-all duration-300">
@@ -244,29 +248,25 @@ function App() {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
               <h1 className="text-3xl font-bold text-blue-900 dark:text-blue-400">
-                {tabs.find(t => t.id === activeTab)?.label || 'Dashboard'}
+                {activeTab === 'Home' ? 'Home' : activeTab === 'VideoGallery' ? 'Video Gallery' : (tabs.find(t => t.id === activeTab)?.label || 'Dashboard')}
               </h1>
 
               <div className="flex items-center gap-4">
-                {/* FAQ Button */}
                 <button
-                  onClick={() => setShowFAQ(true)}
-                  className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-card-bg-dark rounded-full shadow-sm border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-800 transition-colors group"
-                  title="Help & FAQ"
+                  onClick={() => setActiveTab('Home')}
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+                  title="Go to Home Dashboard"
                 >
-                  <HelpCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold text-sm hidden md:inline">FAQ</span>
+                  <Home size={20} />
+                </button>
+                <button
+                  onClick={() => setIsDarkMode(!isDarkMode)}
+                  className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+                  title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+                >
+                  {isDarkMode ? <Moon size={20} /> : <Sun size={20} />}
                 </button>
 
-                {/* Health Profile Button */}
-                <button
-                  onClick={() => setShowHealthProfile(true)}
-                  className="flex items-center gap-2 px-4 py-3 bg-white dark:bg-card-bg-dark rounded-full shadow-sm border border-gray-100 dark:border-gray-700 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-800 transition-colors group"
-                  title="View Health Profile"
-                >
-                  <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold text-sm hidden md:inline">Your Health Profile</span>
-                </button>
 
                 <div className="text-left md:text-right text-sm bg-white dark:bg-card-bg-dark p-3 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
                   <div><span className="font-bold text-gray-500 dark:text-gray-400">Subject:</span> {selectedSubject}</div>
@@ -285,40 +285,43 @@ function App() {
 
             {/* Tabs */}
 
-            <div
-              className="border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto overflow-y-hidden whitespace-nowrap"
-              onWheel={(e) => {
-                // Optional: Enable horizontal scrolling with vertical mouse wheel
-                if (e.deltaY !== 0) {
-                  e.currentTarget.scrollLeft += e.deltaY;
-                }
-              }}
-            >
-              <nav className="-mb-px flex flex-nowrap space-x-8 px-4 min-w-full" aria-label="Tabs">
-                {tabs.map(tab => {
-                  const isActive = activeTab === tab.id;
-                  const isVisited = visitedTabs.has(tab.id);
+            {/* Tabs - Hidden when in Health Profile or Video Gallery */}
+            {!['HealthProfile', 'VideoGallery'].includes(activeTab) && (
+              <div
+                className="border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto overflow-y-hidden whitespace-nowrap"
+                onWheel={(e) => {
+                  // Optional: Enable horizontal scrolling with vertical mouse wheel
+                  if (e.deltaY !== 0) {
+                    e.currentTarget.scrollLeft += e.deltaY;
+                  }
+                }}
+              >
+                <nav className="-mb-px flex flex-nowrap space-x-8 px-4 min-w-full" aria-label="Tabs">
+                  {tabs.map(tab => {
+                    const isActive = activeTab === tab.id;
+                    const isVisited = visitedTabs.has(tab.id);
 
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => handleTabChange(tab.id)}
-                      className={`
-                                    whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 flex-shrink-0
-                                    ${isActive
-                          ? 'hidden' // Active: Hidden from list
-                          : isVisited
-                            ? 'border-transparent text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:border-gray-300' // Visited: Darker Gray
-                            : 'border-transparent text-gray-400 hover:text-gray-600 dark:text-gray-500 hover:border-gray-300' // Unvisited: Lighter Gray
-                        }
-                                `}
-                    >
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => handleTabChange(tab.id)}
+                        className={`
+                                      whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 flex-shrink-0
+                                      ${isActive
+                            ? 'hidden' // Active: Hidden from list
+                            : isVisited
+                              ? 'border-transparent text-gray-700 dark:text-gray-300 hover:text-gray-900 hover:border-gray-300' // Visited: Darker Gray
+                              : 'border-transparent text-gray-400 hover:text-gray-600 dark:text-gray-500 hover:border-gray-300' // Unvisited: Lighter Gray
+                          }
+                                  `}
+                      >
+                        {tab.label}
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+            )}
 
             <AnimatePresence mode="wait">
               <motion.div
@@ -337,6 +340,8 @@ function App() {
                 {activeTab === 'Deviation' && <DeviationTab data={filteredData} isDarkMode={isDarkMode} />}
                 {activeTab === 'TrustOdin' && <TrustOdinComparisonTab data={filteredData} isDarkMode={isDarkMode} />}
                 {activeTab === 'DeepDive' && <DeepDiveTab data={filteredData} isDarkMode={isDarkMode} />}
+                {activeTab === 'HealthProfile' && <HealthProfileTab data={filteredData} isDarkMode={isDarkMode} subjectName={selectedSubject} />}
+                {activeTab === 'VideoGallery' && <VideoGalleryTab isDarkMode={isDarkMode} />}
                 {activeTab === 'Source' && <SourceTab data={data} isDarkMode={isDarkMode} />}
               </motion.div>
             </AnimatePresence>
@@ -346,12 +351,9 @@ function App() {
               isOpen={showFAQ}
               onClose={() => setShowFAQ(false)}
             />
-            <HealthProfileModal
-              isOpen={showHealthProfile}
-              onClose={() => setShowHealthProfile(false)}
-              data={data}
-              initialSubject={selectedSubject}
-              allSubjects={subjects.filter(s => s !== 'All Subjects')}
+            <FAQPanel
+              isOpen={showFAQ}
+              onClose={() => setShowFAQ(false)}
             />
           </div>
         )}
