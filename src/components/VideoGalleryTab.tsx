@@ -23,16 +23,16 @@ export const VideoGalleryTab: React.FC<VideoGalleryTabProps> = ({ isDarkMode }) 
     const cardBg = isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200';
 
     const videos = [
-        { id: '1-1', title: 'Session 1-1', src: v1_1, filename: '1-1.mp4' },
-        { id: '1-2', title: 'Session 1-2', src: v1_2, filename: '1-2.mp4' },
-        { id: '2-1', title: 'Session 2-1', src: v2_1, filename: '2-1.mp4' },
-        { id: '2-2', title: 'Session 2-2', src: v2_2, filename: '2-2.mp4' },
-        { id: '3-1', title: 'Session 3-1', src: v3_1, filename: '3-1.mp4' },
-        { id: '3-2', title: 'Session 3-2', src: v3_2, filename: '3-2.mp4' },
-        { id: '4-1', title: 'Session 4-1', src: v4_1, filename: '4-1.mp4' },
-        { id: '4-2', title: 'Session 4-2', src: v4_2, filename: '4-2.mp4' },
-        { id: '5-1', title: 'Session 5-1', src: v5_1, filename: '5-1.mp4' },
-        { id: '5-2', title: 'Session 5-2', src: v5_2, filename: '5-2.mp4' },
+        { id: '1-1', title: 'Subject ID - 684', src: v1_1, filename: '1-1.mp4' },
+        { id: '1-2', title: 'Subject ID - 684', src: v1_2, filename: '1-2.mp4' },
+        { id: '2-1', title: 'Subject ID - 726', src: v2_1, filename: '2-1.mp4' },
+        { id: '2-2', title: 'Subject ID - 726', src: v2_2, filename: '2-2.mp4' },
+        { id: '3-1', title: 'Subject ID - 700', src: v3_1, filename: '3-1.mp4' },
+        { id: '3-2', title: 'Subject ID - 700', src: v3_2, filename: '3-2.mp4' },
+        { id: '4-1', title: 'Subject ID - 722', src: v4_1, filename: '4-1.mp4' },
+        { id: '4-2', title: 'Subject ID - 722', src: v4_2, filename: '4-2.mp4' },
+        { id: '5-1', title: 'Subject ID - 3', src: v5_1, filename: '5-1.mp4' },
+        { id: '5-2', title: 'Subject ID - 3', src: v5_2, filename: '5-2.mp4' },
     ];
 
     return (
