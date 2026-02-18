@@ -147,7 +147,6 @@ function App() {
     { id: 'Deviation', label: 'Error & Deviation Analytics' },
     { id: 'TrustOdin', label: 'Dr Trust v/s Dr Odin' },
     { id: 'DeepDive', label: 'VinCense Accuracy Overview' },
-    { id: 'HealthProfile', label: 'Health Profile' },
     { id: 'Source', label: 'Data Source' }
   ];
 
