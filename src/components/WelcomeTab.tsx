@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../assets/VinCense Logo.png';
-import img1 from '../assets/1.jpg';
+import img1 from '../assets/1.jpeg';
 import img2 from '../assets/2.jpg';
-import img3 from '../assets/3.jpg';
-import img4 from '../assets/4.jpg';
-import img5 from '../assets/5.avif';
-import img6 from '../assets/6.jpg';
+import img3 from '../assets/3.png';
+import img4 from '../assets/4.png';
+import img5 from '../assets/5.png';
+import img6 from '../assets/6.png';
 import imgMan from '../assets/man.avif';
+import imgSubject662 from '../assets/subject 662.png';
+import imgSubject1 from '../assets/subject 1.png';
+import imgSubject673 from '../assets/subject 673.jpeg';
+import imgSubject3 from '../assets/subject 3.png';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -120,10 +124,12 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
 
     // --- Testimonials Data ---
     const testimonials = [
-        { name: "Dr. A. Sharma", text: "The accuracy of VinCense against standard devices is impressive. A vital tool for remote monitoring." },
-        { name: "Sarah J.", text: "Easy to use and comfortable. Participating in this study has been a seamless experience." },
-        { name: "Research Team", text: "The data granularity provided by this dashboard accelerates our validation process significantly." },
-        { name: "Clinic Staff", text: "Real-time vitals tracking helps us prioritize patient care effectively." },
+        { name: "Subject ID : 113", text: " you'r testing us with device from couple of days, and I’m genuinely impressed. It has a sleek, modern design and feels lightweight yet sturdy on the wrist. The display is clear and easy to read, even in bright light. Most importantly, the accuracy of the vital monitoring and ncluding heart rate and oxygen levels has been consistent and reliable when compared with standard medical devices. Overall, it feels comfortable for daily wear and gives me confidence in tracking my health.", img: imgMan },
+        { name: "Subject ID : 662", text: "The VinCense device features a sleek, professional design that looks great on the wrist. Beyond its aesthetics, it is incredibly comfortable for all-day wear, which is essential for consistent monitoring. I’ve been impressed by its accuracy; it consistently captures real-time results for vital signs like blood pressure and respiratory rate.", img: imgSubject662 },
+        { name: "Subject ID : 684", text: "The device appearance could be improved, as the overall look and finish did not feel very appealing. I also noticed occasional inconsistencies in responsiveness and accuracy of vital readings, and refinements in usability and calibration would enhance the experience.", img: imgMan },
+        { name: "Subject ID : 1", text: "The VinCense device experience is promising and performs well in capturing vitals compared to the reference devices. To enhance its utility for continuous monitoring, the device should minimize missed readings and support automatic storage of continuous measurements without requiring manual confirmation (e.g., clicking OK or submitting each time). With improved reliability and seamless data capture, VinCense can be effectively positioned for continuous monitoring use cases.", img: imgSubject1 },
+        { name: "Subject ID : 673", text: "The VinCense device gives results really quickly compared to the other devices. I’m not focusing much on accuracy because we’re using three devices at the same time, but using both the watch-style device and the finger sensor feels like extra work.", img: imgSubject673 },
+        { name: "Subject ID : 3", text: "The VinCense monitor offers a unique clinical approach, its reliability is currently undercut by inconsistent readings and significant signal noise compared to established brands like Dr Trust and Dr Odin. The physical design also feels a bit dated and could benefit from a more modern, ergonomic 'watch' aesthetic to better suit daily wear. Additionally, incorporating a seamless real-time data display would greatly improve the user experience, as the current lack of live monitoring makes it difficult to track vital shifts as they happen.", img: imgSubject3 },
     ];
 
     return (
@@ -313,11 +319,6 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                                     onClick={() => setCarouselIndex(index)}
                                 >
                                     <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-                                    {isCenter && (
-                                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4 text-white">
-                                            <h3 className="font-bold text-lg">{item.title}</h3>
-                                        </div>
-                                    )}
                                 </motion.div>
                             );
                         })}
@@ -402,7 +403,7 @@ export const WelcomeTab: React.FC<WelcomeTabProps> = ({ onStart, isDarkMode }) =
                                 >
                                     <div className="flex items-center gap-4 mb-4">
                                         <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-indigo-100 dark:border-indigo-900">
-                                            <img src={imgMan} alt="User Avatar" className="w-full h-full object-cover" />
+                                            <img src={t.img} alt="User Avatar" className="w-full h-full object-cover" />
                                         </div>
                                         <div>
                                             <p className={`font-bold ${textColor}`}>{t.name}</p>
