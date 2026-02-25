@@ -19,6 +19,8 @@ import { ShieldCheck, Moon, Sun, Home } from 'lucide-react';
 import { ScrollToTop } from './components/ScrollToTop';
 import { HealthProfileTab } from './components/HealthProfileTab';
 import { FAQPanel } from './components/FAQPanel';
+import { AddVitalsModal } from './components/AddVitalsModal';
+import UserManual from './components/UserManual';
 
 import type { DateRange } from 'react-day-picker';
 
@@ -28,6 +30,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [showFAQ, setShowFAQ] = useState<boolean>(false);
+  const [showAddVitals, setShowAddVitals] = useState<boolean>(false);
   const mainRef = useRef<HTMLDivElement>(null);
 
   // Date State: Range or Single (from react-day-picker)
@@ -188,6 +191,8 @@ function App() {
         onShowFAQ={() => setShowFAQ(true)}
         onShowHealthProfile={() => setActiveTab('HealthProfile')}
         onShowVideoGallery={() => setActiveTab('VideoGallery')}
+        onShowAddVitals={() => setShowAddVitals(true)}
+        onShowUserManual={() => setActiveTab('UserManual')}
       />
 
       <main ref={mainRef} className="flex-1 overflow-auto p-4 md:p-8 pt-16 md:pt-8 relative transition-all duration-300">
@@ -246,8 +251,8 @@ function App() {
           <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-              <h1 className="text-3xl font-bold text-blue-900 dark:text-blue-400">
-                {activeTab === 'Home' ? 'Home' : activeTab === 'VideoGallery' ? 'Video Gallery' : (tabs.find(t => t.id === activeTab)?.label || 'Dashboard')}
+              <h1 className={`${activeTab === 'UserManual' ? 'tracking-wider text-blue-900 dark:text-blue-400' : ''} text-3xl font-bold text-blue-900 dark:text-blue-400`}>
+                {activeTab === 'Home' ? 'Home' : activeTab === 'VideoGallery' ? 'Video Gallery' : activeTab === 'UserManual' ? 'Communitiful x VinCense User Manual' : (tabs.find(t => t.id === activeTab)?.label || 'Dashboard')}
               </h1>
 
               <div className="flex items-center gap-4">
@@ -284,8 +289,8 @@ function App() {
 
             {/* Tabs */}
 
-            {/* Tabs - Hidden when in Health Profile or Video Gallery */}
-            {!['HealthProfile', 'VideoGallery'].includes(activeTab) && (
+            {/* Tabs - Hidden when in Health Profile, Video Gallery or User Manual */}
+            {!['HealthProfile', 'VideoGallery', 'UserManual'].includes(activeTab) && (
               <div
                 className="border-b border-gray-200 dark:border-gray-700 mb-6 overflow-x-auto overflow-y-hidden whitespace-nowrap"
                 onWheel={(e) => {
@@ -342,6 +347,7 @@ function App() {
                 {activeTab === 'HealthProfile' && <HealthProfileTab data={filteredData} isDarkMode={isDarkMode} subjectName={selectedSubject} />}
                 {activeTab === 'VideoGallery' && <VideoGalleryTab isDarkMode={isDarkMode} />}
                 {activeTab === 'Source' && <SourceTab data={data} isDarkMode={isDarkMode} />}
+                {activeTab === 'UserManual' && <UserManual />}
               </motion.div>
             </AnimatePresence>
 
@@ -353,6 +359,12 @@ function App() {
             <FAQPanel
               isOpen={showFAQ}
               onClose={() => setShowFAQ(false)}
+            />
+
+            {/* Add Vitals Modal */}
+            <AddVitalsModal
+              isOpen={showAddVitals}
+              onClose={() => setShowAddVitals(false)}
             />
           </div>
         )}

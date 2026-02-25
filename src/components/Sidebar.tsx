@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../assets/VinCense Logo.png';
 import butterflyLogo from '../assets/butterfly.png';
-import { RefreshCw, Menu, X, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight, HelpCircle, User, Video } from 'lucide-react';
+import { RefreshCw, Menu, X, Calendar as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight, HelpCircle, User, Video, PlusCircle, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker } from 'react-day-picker';
 import type { DateRange } from 'react-day-picker';
@@ -20,6 +20,8 @@ interface SidebarProps {
   onShowFAQ: () => void;
   onShowHealthProfile: () => void;
   onShowVideoGallery: () => void;
+  onShowAddVitals: () => void;
+  onShowUserManual: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -34,6 +36,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onShowFAQ,
   onShowHealthProfile,
   onShowVideoGallery,
+  onShowAddVitals,
+  onShowUserManual,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -181,11 +185,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </AnimatePresence>
             </div>
 
-            {/* Reference Ranges */}
-
 
             {/* Sync Data & Other Actions */}
             <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 pb-4 space-y-3">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={onShowAddVitals}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg shadow-lg shadow-indigo-500/20 text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all mb-3"
+              >
+                <PlusCircle size={18} />
+                Add Vitals
+              </motion.button>
+
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -193,7 +205,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg shadow-lg shadow-indigo-500/20 text-sm font-bold text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all"
               >
                 <RefreshCw size={18} className="animate-spin-slow" />
-                Sync Vitals Log
+                Sync Vitals
               </motion.button>
 
               <button
@@ -219,12 +231,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <HelpCircle size={18} />
                 FAQ
               </button>
+
+              <button
+                onClick={onShowUserManual}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              >
+                <FileText size={18} />
+                User Manual
+              </button>
             </div>
           </>
         ) : (
           /* Collapsed View */
           <div className="flex flex-col items-center gap-6 mt-4">
-            <button onClick={onRefresh} className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200" title="Sync Vitals Log">
+            <button onClick={onShowAddVitals} className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200" title="Add Vitals">
+              <PlusCircle size={20} />
+            </button>
+            <button onClick={onRefresh} className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-200" title="Sync Vitals">
               <RefreshCw size={20} />
             </button>
             <button onClick={onShowFAQ} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="FAQ">
@@ -235,6 +258,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </button>
             <button onClick={onShowVideoGallery} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="Video Gallery">
               <Video size={20} />
+            </button>
+            <button onClick={onShowUserManual} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400" title="User Manual">
+              <FileText size={20} />
             </button>
           </div>
         )}
