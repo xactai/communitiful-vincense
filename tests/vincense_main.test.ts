@@ -105,6 +105,31 @@ test.describe('VinCense Dashboard E2E Tests', () => {
         await expect(page.getByText('Help & FAQ').first()).not.toBeVisible();
     });
 
+    test('should navigate to User Manual view and verify aesthetic', async ({ page }) => {
+        await page.getByRole('button', { name: /Start Exploring/i }).click();
+
+        const manualButton = page.getByRole('button', { name: /User Manual/i });
+        await expect(manualButton).toBeVisible();
+        await manualButton.click();
+
+        // Verify Title in App.tsx header using a robust regex
+        await expect(page.getByRole('heading', { name: /Device-to-Dashboard Operations Handbook/i, level: 1 })).toBeVisible();
+
+        // Verify Document Box (Google Form aesthetic)
+        const documentBox = page.locator('div.border-t-\\[10px\\]');
+        await expect(documentBox).toBeVisible();
+        await expect(documentBox).toHaveClass(/border-indigo-700/);
+
+        // Verify Iframe presence
+        const iframe = documentBox.locator('iframe');
+        await expect(iframe).toBeVisible();
+
+        // Navigate back to Home
+        const homeButton = page.locator('button[title="Go to Home Dashboard"]');
+        await homeButton.click();
+        await expect(page.getByRole('heading', { name: 'Home', level: 1 })).toBeVisible();
+    });
+
     test('should navigate through all analytics tabs and render charts', async ({ page }) => {
         await page.getByRole('button', { name: /Start Exploring/i }).click();
 
@@ -152,7 +177,7 @@ test.describe('VinCense Dashboard E2E Tests', () => {
     test('should functionality of Sync Vitals button', async ({ page }) => {
         await page.getByRole('button', { name: /Start Exploring/i }).click();
 
-        const syncButton = page.getByRole('button', { name: /Sync Vitals Log/i });
+        const syncButton = page.getByRole('button', { name: /^Sync Vitals$/i });
         await expect(syncButton).toBeVisible();
         await syncButton.click();
 

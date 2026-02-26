@@ -206,9 +206,9 @@ function App() {
               exit={{ opacity: 0, scale: 0.9 }}
               className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none"
             >
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-2xl border border-indigo-100 dark:border-indigo-900 pointer-events-auto flex flex-col items-center gap-4 max-w-sm mx-4">
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
-                  <ShieldCheck className="w-8 h-8 text-green-600 dark:text-green-400" />
+              <div className="bg-green-100 dark:bg-green-900/40 p-6 rounded-2xl shadow-2xl border border-green-200 dark:border-green-800 pointer-events-auto flex flex-col items-center gap-4 max-w-sm mx-4 backdrop-blur-sm">
+                <div className="p-3 bg-green-200 dark:bg-green-800/50 rounded-full">
+                  <ShieldCheck className="w-8 h-8 text-green-700 dark:text-green-400" />
                 </div>
                 <div className="text-center">
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Data Synced Successfully</h3>
@@ -220,7 +220,7 @@ function App() {
                 </div>
                 <button
                   onClick={() => setSyncStats(null)}
-                  className="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-semibold rounded-lg transition-colors text-sm"
+                  className="px-6 py-2 bg-gray-700 dark:bg-gray-600 hover:bg-gray-800 dark:hover:bg-gray-500 text-white font-semibold rounded-lg transition-colors text-sm shadow-md"
                 >
                   Dismiss
                 </button>
@@ -252,7 +252,7 @@ function App() {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
               <h1 className={`${activeTab === 'UserManual' ? 'tracking-wider text-blue-900 dark:text-blue-400' : ''} text-3xl font-bold text-blue-900 dark:text-blue-400`}>
-                {activeTab === 'Home' ? 'Home' : activeTab === 'VideoGallery' ? 'Video Gallery' : activeTab === 'UserManual' ? 'Communitiful x VinCense User Manual' : (tabs.find(t => t.id === activeTab)?.label || 'Dashboard')}
+                {activeTab === 'Home' ? 'Home' : activeTab === 'VideoGallery' ? 'Video Gallery' : activeTab === 'UserManual' ? 'Device-to-Dashboard Operations Handbook' : (tabs.find(t => t.id === activeTab)?.label || 'Dashboard')}
               </h1>
 
               <div className="flex items-center gap-4">

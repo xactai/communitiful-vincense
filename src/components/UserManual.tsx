@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import userManualPdf from '../assets/Commutiful x VinCense_User-Manual.pdf';
+import userManualPdf from '../assets/Device-to-Dashboard Operations Handbook.pdf';
 
 const UserManual: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -8,7 +8,7 @@ const UserManual: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#f0ebf8] dark:bg-slate-950 -m-4 md:-m-8 p-4 md:p-8">
             {/* Google Form Style Card Container */}
-            <div className="max-w-4xl mx-auto flex flex-col gap-4">
+            <div className="max-w-3xl mx-auto flex flex-col gap-4">
                 {/* Main Card */}
                 <div className="relative bg-white dark:bg-card-bg-dark rounded-lg shadow-sm border-t-[10px] border-indigo-700 dark:border-indigo-600 overflow-hidden flex flex-col min-h-[85vh]">
                     {isLoading && (
